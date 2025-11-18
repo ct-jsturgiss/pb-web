@@ -1,0 +1,11 @@
+<div class="block light-border-solid surface-100">	
+	@for(item of items; track item.id) {
+	<div class="flex justify-content-center m-1" [id]="item.id">
+		<a class="items-center p-menu-item-link" [routerLink]="item.routerLink">
+			<p-button [pTooltip]="item.label" (onClick)="onMenuItemClicked($event, item.id)" [severity]="getMenuItemSeverity(item)">
+					<span [class]="item.icon"></span>
+			</p-button>
+		</a>
+	</div>
+	}
+</div>

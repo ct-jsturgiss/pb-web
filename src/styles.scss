@@ -1,0 +1,52 @@
+@import "primeicons/primeicons.css";
+
+* {
+	box-sizing: border-box;
+	color: black;
+	background: none;
+	background-color: none;
+	font-family: 'Noto Sans';
+}
+
+html, body {
+	width: 100vw;
+	height: 100vh;
+	background-color: white;
+	margin: 0;
+	padding: 0;
+	display: block;
+}
+
+/* Borders */
+
+.light-border-solid {
+	border: 1px solid var(--p-stone-400);
+	border-radius: 0.25em;
+}
+
+/* Typography */
+
+.text-std {
+	display: block;
+	font-weight: 400;
+	font-size: 1.25em;
+	font-family: 'Noto Sans';
+}
+
+/* Tables */
+
+.table-bg-std {
+	background-color: white;
+}
+
+/* Sizing */
+
+.min-h-10rem {
+	min-height: 10rem;
+}
+
+.card-std {
+	@extend .light-border-solid, .table-bg-std
+}
+
+// End
