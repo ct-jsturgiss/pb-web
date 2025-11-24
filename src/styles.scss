@@ -1,5 +1,12 @@
 @import "primeicons/primeicons.css";
 
+:root {
+
+	/* Colors */
+	--caretaker-red: rgb(237, 36, 38)
+
+}
+
 * {
 	box-sizing: border-box;
 	color: black;
@@ -16,6 +23,17 @@ html, body {
 	padding: 0;
 	display: block;
 }
+
+/* Background Colors */
+.bg-caretaker-red {
+	background-color: var(--caretaker-red);
+}
+
+/* Colors */
+.color-white {
+	color: white;
+}
+
 
 /* Borders */
 
@@ -46,7 +64,24 @@ html, body {
 }
 
 .card-std {
-	@extend .light-border-solid, .table-bg-std
+	@extend .light-border-solid, .table-bg-std;
 }
 
-// End
+/* App Main Interface */
+
+.title-bar-icon {
+	max-width: 3.75em;
+}
+
+.title-bar-icon > img {
+	max-width: 3.75em;
+}
+
+.title-bar-title {
+	min-width: 5em;
+	padding-top: 0em;
+}
+
+.title-bar-title > h2 {
+	padding-left: 0.5em;
+}
