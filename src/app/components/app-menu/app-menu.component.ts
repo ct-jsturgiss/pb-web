@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, input } from '@angular/core';
 import { MenuItem, MessageService, PrimeIcons } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,7 +10,7 @@ import { MainMenuConstants } from '../../../constants/ui-constants';
 
 @Component({
   selector: 'app-app-menu',
-  imports: [CommonModule, ButtonModule, TooltipModule, RouterLink, RouterModule],
+  imports: [ButtonModule, TooltipModule, RouterLink, RouterModule],
   templateUrl: './app-menu.component.html',
   styleUrl: './app-menu.component.scss',
   providers: [
