@@ -36,11 +36,14 @@ export class AppMenuComponent {
 		});
 	}
 
-
-
 	getMenuItemSeverity(item:MenuItem) {
 		const state:MainMenuItemState|undefined = item?.state as MainMenuItemState;
 		return (state?.selected ?? false) ? "primary" : "secondary";
+	}
+
+	getMenuItemSelectedClass(item:MenuItem) {
+		const state:MainMenuItemState|undefined = item?.state as MainMenuItemState;
+		return (state?.selected ?? false) ? "main-menu-item-selected" : "";
 	}
 
 	updateSelectedMenuItem() {

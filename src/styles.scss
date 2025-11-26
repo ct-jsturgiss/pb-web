@@ -85,3 +85,7 @@ html, body {
 .title-bar-title > h2 {
 	padding-left: 0.5em;
 }
+
+.main-menu-item-selected > button {
+	background-color: var(--caretaker-red);
+}
