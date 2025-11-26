@@ -50,14 +50,18 @@ const appPreset:Preset = {
 const appTheme = definePreset(Aura, appPreset);
 
 const serverConfig: ApplicationConfig = {
-  providers: [importProvidersFrom(BrowserAnimationsModule), provideServerRendering(withRoutes(serverRoutes)), providePrimeNG({
+  providers: [
+    importProvidersFrom(BrowserAnimationsModule), 
+    provideServerRendering(withRoutes(serverRoutes)),
+    providePrimeNG({
             theme: {
                 preset: appTheme,
 				options: {
 					darkModeSelector: false,
 				}
             }
-        })]
+        })
+    ]
 };
 
 export const config = mergeApplicationConfig(appConfig, serverConfig);
