@@ -1,0 +1,82 @@
+export type ApiResultHandler = (response:ApiQueryResult) => void;
+
+export interface ApiQueryResult {
+    isSuccess:boolean;
+    isError:boolean;
+    isFatal?:boolean;
+    message?:string[];
+    errors?:string[];
+    data?:any;
+}
+
+export class ApiQueryResult implements ApiQueryResult {
+
+    constructor(json:any) {
+        if(!json || typeof json !== "object") {
+            throw new Error("Query result cannot be initialized without a proper JSON response object.");
+        }
+
+        this.isSuccess = json["is_success"] ?? false; 
+        this.isError = json["is_error"] ?? false;
+        this.isFatal = json["is_fatal"] ?? false;
+        this.message = json["message"] ?? [];
+        this.errors = json["errors"] ?? [];
+        this.data = json["data"] ?? {};
+    }
+
+}
+
+export interface ApiQueryBody {
+    "page_size"?:number;
+    "offset"?:number;
+}
+
+export interface ApiQueryRequest {
+    uri:string;
+    pageSize?:number;
+    offset?:number;
+    toJsonBody: () => string;
+    handleResponse: ApiResultHandler;
+}
+
+export class ApiQueryRequest implements ApiQueryRequest {
+
+    constructor() {
+
+        this.toJsonBody = function():string {
+            const body:any = {};
+            if(this.offset) {
+                body["offset"] = this.offset;
+            }
+            if(this.pageSize) {
+                body["page_size"] = this.pageSize;
+            }
+
+            return JSON.stringify(body);
+        }
+    }
+
+    setUri(uri:string) {
+        this.uri = uri;
+
+        return this;
+    }
+
+    setPageSize(pageSize?:number) {
+        this.pageSize = pageSize;
+        
+        return this;
+    }
+
+    setOffset(offset?:number) {
+        this.offset = offset;
+
+        return this;
+    }
+
+    setResponseHandler(handler:ApiResultHandler) {
+        this.handleResponse = handler;
+
+        return this;
+    }
+}
