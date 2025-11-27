@@ -1,12 +1,19 @@
 export type ApiResultHandler = (response:ApiQueryResult) => void;
 
+export interface ApiQueryRecords {
+    offset?:number;
+    pageSize?:number;
+    count:number;
+    records:any[];
+}
+
 export interface ApiQueryResult {
     isSuccess:boolean;
     isError:boolean;
     isFatal?:boolean;
     message?:string[];
     errors?:string[];
-    data?:any;
+    data?:ApiQueryRecords;
 }
 
 export class ApiQueryResult implements ApiQueryResult {
