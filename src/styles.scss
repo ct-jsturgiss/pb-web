@@ -67,6 +67,12 @@ html, body {
 	@extend .light-border-solid, .table-bg-std;
 }
 
+/* Padding */
+
+.pb-10rem {
+	padding-bottom: 10rem;
+}
+
 /* App Main Interface */
 
 .title-bar-icon {
