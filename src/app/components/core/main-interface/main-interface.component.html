@@ -1,4 +1,4 @@
-<div id="main-interface" class="h-full w-full">
+<div id="main-interface" class="h-full w-full max-h-screen max-w-screen">
 	<div class="grid m-0 max-h-4rem w-full bg-caretaker-red">
 		<div class="col-1 align-content-center title-bar-icon">
 			<img src="assets/png/caretaker-tree-white.png" style="width: 3.5em;"/>
@@ -7,11 +7,11 @@
 			<h2 class="m-0 color-white">PRODUCTION BUILDER</h2>
 		</div>
 	</div>
-	<div class="grid m-0 h-full">
-		<div class="col-1 max-w-max">
+	<div class="grid m-0 h-full pb-2">
+		<div class="col-1 max-w-max h-full">
 			<app-app-menu/>
 		</div>
-		<div class="col">
+		<div class="col h-full">
 			<ng-content/>
 		</div>
 	</div>

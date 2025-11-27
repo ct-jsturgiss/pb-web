@@ -13,10 +13,10 @@
 		</div>
 	</div>
 </div>
-<div class="grid">
-	<div class="col-6">
-		<div class="card-std min-h-10rem">
-			<p-table class="m-2">
+<div class="grid h-full pb-10rem">
+	<div class="col-6 h-full">
+		<div class="card-std min-h-10rem h-full">
+			<p-table class="m-2 pb-3" [value]="(m_itemData | async) ?? []" [scrollable]="true" scrollHeight="flex">
 				<ng-template #header>
 					<tr>
 						<th>
@@ -27,11 +27,18 @@
 						</th>
 					</tr>
 				</ng-template>
-				<ng-template #body>
-					<tr>
-						<td></td>
-						<td></td>
-					</tr>
+				<ng-template #body let-item>
+					@if (m_loadingData()) {
+						<tr>
+							<td><p-skeleton width="10rem" class="mb-2"/></td>
+							<td><p-skeleton width="10rem" class="mb-2"/></td>
+						</tr>
+					} @else {
+						<tr>
+							<td>{{ item.ItemCode }}</td>
+							<td>{{ item.ItemName }}</td>
+						</tr>
+					}
 				</ng-template>
 			</p-table>
 		</div>
