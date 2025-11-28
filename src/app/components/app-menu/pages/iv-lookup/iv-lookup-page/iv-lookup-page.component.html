@@ -1,0 +1,23 @@
+<div class="grid">
+	<div class="col">
+		<h3>Inventory Lookup</h3>
+	</div>
+</div>
+<div class="grid">
+	<div class="col">
+		<div id="iv-search" class="max-w-25rem">
+			<p-iconField>
+				<p-inputIcon class="pi pi-search"/>
+				<input type="text" pInputText placeholder="Search" class="w-full" [(ngModel)]="searchPattern"/>
+			</p-iconField>
+		</div>
+	</div>
+</div>
+<div class="grid h-full pb-10rem">
+	<div class="col-6 h-full">
+		<pb-iv-lookup [searchPattern]="searchPattern()" />
+	</div>
+	<div class="col-6">
+
+	</div>
+</div>

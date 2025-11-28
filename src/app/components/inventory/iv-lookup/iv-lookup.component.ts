@@ -1,8 +1,6 @@
-import { Component, model, ModelSignal } from '@angular/core';
+import { Component, input, model, ModelSignal } from '@angular/core';
 
 // primeng
-import { IconField } from "primeng/iconfield"
-import { InputIcon } from "primeng/inputicon"
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from "primeng/table"
 import { SkeletonModule } from "primeng/skeleton"
@@ -19,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'pb-iv-lookup',
-	imports: [IconField, InputIcon, InputTextModule, TableModule, SkeletonModule, AsyncPipe, FormsModule, ProgressSpinnerModule],
+	imports: [InputTextModule, TableModule, SkeletonModule, AsyncPipe, FormsModule, ProgressSpinnerModule],
 	templateUrl: './iv-lookup.component.html',
 	styleUrl: './iv-lookup.component.scss',
 	providers: [InventoryLookupAdapter, InventoryApiService],
@@ -28,51 +26,50 @@ export class IvLookupComponent {
 
 	private m_api:InventoryApiService;
 
-	public m_queryingData:ModelSignal<boolean> = model<boolean>(false);
-	public m_loading:ModelSignal<boolean> = model<boolean>(false);
-	public m_itemData:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
-	public m_searchPattern:ModelSignal<string> = model<string>("");
-	public m_itemView:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
+	public isQuerying:ModelSignal<boolean> = model<boolean>(false);
+	public isLoading:ModelSignal<boolean> = model<boolean>(false);
+	public lookupStore:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
+	public lookupView:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
+	public searchPattern = input<string>("");
 
 	constructor(api:InventoryApiService) {
 		this.m_api = api;
-		this.m_searchPattern.subscribe(this.onSearchPatternChanged.bind(this));
 	}
 
 	ngOnInit() {
 
-		this.m_queryingData.set(true);
+		this.isQuerying.set(true);
 		const sub = this.m_api.executeQuery<InventoryLookup>(this.getItemListRequest());
 		sub.pipe(first()).subscribe(v => {
-			this.m_itemData.next(v);
+			this.lookupStore.next(v);
 			this.filterItems(v);
-			this.m_queryingData.set(false);
+			this.isQuerying.set(false);
 		});
 	}
 
 	// Functions
 	filterItems(items:InventoryLookup[]) {
-		this.m_loading.set(true);
-		if(!this.m_searchPattern()) {
-			this.m_itemView.next(items);
+		const searchStr = this.searchPattern() ?? "";
+		this.isLoading.set(true);
+		if(!searchStr) {
+			this.lookupView.next(items);
 		} else {
-			const strPattern = this.m_searchPattern() ?? "";
 			let filteredItems:InventoryLookup[] = items;
 			filteredItems = filteredItems.filter(v => {
 				let ret = false;
-				if(containsAsString(v.ItemCode, strPattern)) {
+				if(containsAsString(v.ItemCode, searchStr)) {
 					ret = true;
 				}
-				if(containsAsString(v.ItemName, strPattern)) {
+				if(containsAsString(v.ItemName, searchStr)) {
 					ret = true;
 				}
 
 				return ret;
 			});
 
-			this.m_itemView.next(filteredItems);
+			this.lookupView.next(filteredItems);
 		}
-		this.m_loading.set(false);
+		this.isLoading.set(false);
 	}
 
 	// Queries
@@ -87,6 +84,6 @@ export class IvLookupComponent {
 	// Event Handlers
 
 	onSearchPatternChanged(value:string) {
-		this.filterItems(this.m_itemData.value);
+		this.filterItems(this.lookupStore.value);
 	}
 }

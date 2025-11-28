@@ -1,79 +1,57 @@
-<div class="grid">
-	<div class="col">
-		<h3>Inventory Lookup</h3>
-	</div>
-</div>
-<div class="grid">
-	<div class="col">
-		<div id="iv-search" class="max-w-25rem">
-			<p-iconField>
-				<p-inputIcon class="pi pi-search"/>
-				<input type="text" pInputText placeholder="Search" class="w-full" [(ngModel)]="m_searchPattern"/>
-			</p-iconField>
+<div class="card-std min-h-10rem h-full">
+	@if (isLoading()) {
+		<div class="flex justify-center mt-40p">
+			<p-progress-spinner strokeWidth="6" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
 		</div>
-	</div>
-</div>
-<div class="grid h-full pb-10rem">
-	<div class="col-6 h-full">
-		<div class="card-std min-h-10rem h-full">
-			@if (m_loading()) {
-				<div class="flex justify-center mt-40p">
-					<p-progress-spinner strokeWidth="6" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
-				</div>
-			}
-			@if (m_queryingData()) {
-				<p-table class="m-2 pb-3" [value]="[1,2,3]" [scrollable]="true" scrollHeight="flex">
-					<ng-template #header>
-						<tr>
-							<th>
-								Item Code
-							</th>
-							<th>
-								Item Description
-							</th>
-						</tr>
-					</ng-template>
-					<ng-template #body>
-						<tr>
-							<td><p-skeleton width="10rem" class="mb-2"/></td>
-							<td><p-skeleton width="10rem" class="mb-2"/></td>
-						</tr>
-					</ng-template>
-				</p-table>
-			} @else if (m_itemView.value.length === 0) {
-				<div class="grid justify-content-center mt-8">
-					<div class="col text-center">
-						<h2>Nothing found for this criteria.</h2>
-					</div>
-				</div>
-				<div class="grid justify-content-center">
-					<div class="col text-center">
-						<img src="assets/svg/confused-smile.svg" alt="Confused Smile" width="200em"/>
-					</div>
-				</div>
-			} @else {
-				<p-table class="m-2 pb-3" [value]="(m_itemView | async) ?? []" [scrollable]="true" scrollHeight="flex">
-					<ng-template #header>
-						<tr>
-							<th>
-								Item Code
-							</th>
-							<th>
-								Item Description
-							</th>
-						</tr>
-					</ng-template>
-					<ng-template #body let-item>
-						<tr>
-							<td>{{ item.ItemCode }}</td>
-							<td>{{ item.ItemName }}</td>
-						</tr>
-					</ng-template>
-				</p-table>
-			}
+	}
+	@if (isQuerying()) {
+		<p-table class="m-2 pb-3" [value]="[1,2,3]" [scrollable]="true" scrollHeight="flex">
+			<ng-template #header>
+				<tr>
+					<th>
+						Item Code
+					</th>
+					<th>
+						Item Description
+					</th>
+				</tr>
+			</ng-template>
+			<ng-template #body>
+				<tr>
+					<td><p-skeleton width="10rem" class="mb-2"/></td>
+					<td><p-skeleton width="10rem" class="mb-2"/></td>
+				</tr>
+			</ng-template>
+		</p-table>
+	} @else if (lookupView.value.length === 0) {
+		<div class="grid justify-content-center mt-8">
+			<div class="col text-center">
+				<h2>Nothing found for this criteria.</h2>
+			</div>
 		</div>
-	</div>
-	<div class="col-6">
-
-	</div>
+		<div class="grid justify-content-center">
+			<div class="col text-center">
+				<img src="assets/svg/confused-smile.svg" alt="Confused Smile" width="200em"/>
+			</div>
+		</div>
+	} @else {
+		<p-table class="m-2 pb-3" [value]="(lookupView | async) ?? []" [scrollable]="true" scrollHeight="flex">
+			<ng-template #header>
+				<tr>
+					<th>
+						Item Code
+					</th>
+					<th>
+						Item Description
+					</th>
+				</tr>
+			</ng-template>
+			<ng-template #body let-item>
+				<tr>
+					<td>{{ item.ItemCode }}</td>
+					<td>{{ item.ItemName }}</td>
+				</tr>
+			</ng-template>
+		</p-table>
+	}
 </div>
