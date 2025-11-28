@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { MainContentComponent } from './components/main-content/main-content.component';
 import { NotFoundComponent } from './components/status/not-found/not-found.component';
 import { MainMenuKeys } from '../constants/ui-constants';
-import { IvLookupComponent } from './components/inventory/iv-lookup/iv-lookup.component';
+import { IvLookupPageComponent } from './components/app-menu/pages/iv-lookup/iv-lookup-page/iv-lookup-page.component';
 
 export const routes: Routes = [
 	{
@@ -11,7 +11,7 @@ export const routes: Routes = [
 	},
 	{
 		path: MainMenuKeys.InventoryLookup.routerLink,
-		component: IvLookupComponent
+		component: IvLookupPageComponent
 	},
 	{
 		path: "**",
