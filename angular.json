@@ -81,7 +81,11 @@
               "buildTarget": "pb-app:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "sslKey": "..\\..\\localhost-certs\\localhost-ss.key",
+            "sslCert": "..\\..\\localhost-certs\\localhost-ss.crt"
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
