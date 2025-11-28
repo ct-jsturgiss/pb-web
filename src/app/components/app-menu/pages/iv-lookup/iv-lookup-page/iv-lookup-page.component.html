@@ -4,13 +4,8 @@
 	</div>
 </div>
 <div class="grid">
-	<div class="col">
-		<div id="iv-search" class="max-w-25rem">
-			<p-iconField>
-				<p-inputIcon class="pi pi-search"/>
-				<input type="text" pInputText placeholder="Search" class="w-full" [(ngModel)]="searchPattern"/>
-			</p-iconField>
-		</div>
+	<div class="col-6">
+		<pb-search-bar [(searchValue)]="searchPattern"/>
 	</div>
 </div>
 <div class="grid h-full pb-10rem">
