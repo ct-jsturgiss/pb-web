@@ -11,7 +11,7 @@ import { ProgressSpinnerModule } from "primeng/progressspinner"
 // pb
 import { ApiQueryRequest } from '../../../services/api-interfaces';
 import { BehaviorSubject, first, map, Observable, of } from 'rxjs';
-import { InventoryApiService } from '../../../services/inventory/inventory-service';
+import { InventoryApiService } from '../../../services/inventory/iv-api-service';
 import { InventoryLookup, InventoryLookupAdapter } from '../../../models/inventory/inventory-lookup';
 import { AsyncPipe } from '@angular/common';
 import { containsAsString } from '../../../services/core/helpers';
