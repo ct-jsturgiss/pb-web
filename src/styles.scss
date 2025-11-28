@@ -3,8 +3,12 @@
 :root {
 
 	/* Colors */
-	--caretaker-red: rgb(237, 36, 38)
+	--caretaker-red: rgb(237, 36, 38);
 
+	--p-progressspinner-color-one: var(--caretaker-red);
+	--p-progressspinner-color-two: var(--caretaker-red);
+	--p-progressspinner-color-three: var(--caretaker-red);
+	--p-progressspinner-color-four: var(--caretaker-red);
 }
 
 * {
@@ -71,6 +75,12 @@ html, body {
 
 .pb-10rem {
 	padding-bottom: 10rem;
+}
+
+/* Margin */
+
+.mt-40p {
+	margin-top: 40%;
 }
 
 /* App Main Interface */
