@@ -1,4 +1,4 @@
-import { Component, input, model, ModelSignal } from '@angular/core';
+import { Component, input, model, ModelSignal, SimpleChanges } from '@angular/core';
 
 // primeng
 import { InputTextModule } from 'primeng/inputtext';
@@ -39,12 +39,16 @@ export class IvLookupComponent {
 	ngOnInit() {
 
 		this.isQuerying.set(true);
-		const sub = this.m_api.executeQuery<InventoryLookup>(this.getItemListRequest());
+		const sub = this.m_api.executeQuery<InventoryLookup>(this.getLookupsRequest());
 		sub.pipe(first()).subscribe(v => {
 			this.lookupStore.next(v);
 			this.filterItems(v);
 			this.isQuerying.set(false);
 		});
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		this.filterItems(this.lookupStore.getValue());
 	}
 
 	// Functions
@@ -74,16 +78,10 @@ export class IvLookupComponent {
 
 	// Queries
 
-	getItemListRequest():ApiQueryRequest {
+	getLookupsRequest():ApiQueryRequest {
 
 		return new ApiQueryRequest()
 			.setUri(`inventory/items`)
 			.setPageSize(100);
-	}
-
-	// Event Handlers
-
-	onSearchPatternChanged(value:string) {
-		this.filterItems(this.lookupStore.value);
 	}
 }
