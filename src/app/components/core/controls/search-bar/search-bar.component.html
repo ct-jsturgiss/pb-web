@@ -1,6 +1,13 @@
 <div>
     <p-iconField>
-        <p-inputIcon class="pi pi-search"/>
-        <input type="text" pInputText placeholder="Search" class="w-full" [(ngModel)]="searchValue"/>
+        <div class="grid">
+            <div class="col-10">
+                <p-inputIcon class="pi pi-search"/>
+                <input type="text" pInputText placeholder="Search" class="w-full" [(ngModel)]="searchValue"/>
+            </div>
+            <div class="col-1" style="max-width: 1rem; padding: 0; padding-top: 0.5rem;">
+                <p-button severity="primary" icon="pi pi-times" pTooltip="Clear" tooltipPosition="right" positionTop="-15" (onClick)="onClearButtonClicked()"></p-button>
+            </div>
+        </div>
     </p-iconField>
 </div>
