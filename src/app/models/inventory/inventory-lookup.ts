@@ -10,7 +10,7 @@ export class InventoryLookup {
 
 }
 
-export class InventoryLookupAdapter implements ModelAdapter<InventoryLookup> {
+export const InventoryLookupAdapter:ModelAdapter<InventoryLookup> = {
 
     adapt(item: any): InventoryLookup {
         return new InventoryLookup(

@@ -5,15 +5,13 @@ import { environment } from "../../environments/environment.development";
 import { Observable } from "rxjs";
 
 export interface IPbApi {
-    executeQuery:<TModel>(query:ApiQueryRequest) => Observable<TModel[]>;
+    postQuery:(query:ApiQueryRequest) => Observable<ApiQueryResult>;
 }
 
 @Injectable({ providedIn: "root"})
-export abstract class PbApi implements IPbApi {
+export class PbApi implements IPbApi {
 
     constructor(protected http:HttpClient) {}
-
-    abstract executeQuery<TModel>(query: ApiQueryRequest): Observable<TModel[]>;
 
     postQuery(query:ApiQueryRequest) {
         const fullUri:string = environment.apiEndpoint + query.uri;

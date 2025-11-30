@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
 	imports: [InputTextModule, TableModule, SkeletonModule, AsyncPipe, FormsModule, ProgressSpinnerModule],
 	templateUrl: './iv-lookup.component.html',
 	styleUrl: './iv-lookup.component.scss',
-	providers: [InventoryLookupAdapter, InventoryApiService],
+	providers: [InventoryApiService],
 })
 export class IvLookupComponent {
 
@@ -41,7 +41,7 @@ export class IvLookupComponent {
 	ngOnInit() {
 
 		this.isQuerying.set(true);
-		const sub = this.m_api.executeQuery<InventoryLookup>(this.getLookupsRequest());
+		const sub = this.m_api.listInventoryLookups(this.getLookupsRequest());
 		sub.pipe(first()).subscribe(async v => {
 			this.lookupStore.next(v);
 			await this.filterItems(v);
