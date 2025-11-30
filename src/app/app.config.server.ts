@@ -11,6 +11,11 @@ import Aura from "@primeuix/themes/aura";
 import { Preset } from '@primeuix/themes/types';
 
 // Caretaker theme
+const colors ={
+    caretakerred: "#ED2426",
+    lightgray: "#DDD",
+}
+
 const appPreset:Preset = {
 	semantic: {
 		primary: {
@@ -41,10 +46,23 @@ const appPreset:Preset = {
                     800: '{zinc.800}',
                     900: '{zinc.900}',
                     950: '{zinc.950}'
-				}
+				},
 			}
-		}
-	}
+		},
+	},
+    components: {
+        datatable: {
+            colorScheme: {
+                light: {
+                    row: {
+                        hoverBackground: colors.lightgray,
+                        selectedColor: "white",
+                        selectedBackground: colors.caretakerred + "CC"
+                    },
+                }
+            }
+        }
+    }
 };
 
 const appTheme = definePreset(Aura, appPreset);
