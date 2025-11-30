@@ -13,7 +13,11 @@ export class InventoryLookup {
 export class InventoryLookupAdapter implements ModelAdapter<InventoryLookup> {
 
     adapt(item: any): InventoryLookup {
-        return new InventoryLookup(1,item["item_code"],item["item_name"]);
+        return new InventoryLookup(
+            item["id"],
+            item["item_code"],
+            item["item_name"]
+        );
     }
 
 }
