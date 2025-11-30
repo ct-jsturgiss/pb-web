@@ -54,7 +54,6 @@ export class IvLookupComponent {
 	}
 
 	// Functions
-	isRowSelectable():boolean { return true; }
 
 	async filterItems(items:InventoryLookup[]) {
 		const searchStr = this.searchPattern() ?? "";
