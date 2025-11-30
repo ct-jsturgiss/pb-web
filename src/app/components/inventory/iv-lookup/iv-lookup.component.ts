@@ -30,19 +30,21 @@ export class IvLookupComponent {
 	public isLoading:ModelSignal<boolean> = model<boolean>(false);
 	public lookupStore:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
 	public lookupView:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
+	public selected:BehaviorSubject<InventoryLookup> = new BehaviorSubject<InventoryLookup>(new InventoryLookup(-1,"",""));
 	public searchPattern = input<string>("");
 
 	constructor(api:InventoryApiService) {
 		this.m_api = api;
+		this.selected.subscribe(this.onSelectedChanged);
 	}
 
 	ngOnInit() {
 
 		this.isQuerying.set(true);
 		const sub = this.m_api.executeQuery<InventoryLookup>(this.getLookupsRequest());
-		sub.pipe(first()).subscribe(v => {
+		sub.pipe(first()).subscribe(async v => {
 			this.lookupStore.next(v);
-			this.filterItems(v);
+			await this.filterItems(v);
 			this.isQuerying.set(false);
 		});
 	}
@@ -52,23 +54,28 @@ export class IvLookupComponent {
 	}
 
 	// Functions
-	filterItems(items:InventoryLookup[]) {
+	isRowSelectable():boolean { return true; }
+
+	async filterItems(items:InventoryLookup[]) {
 		const searchStr = this.searchPattern() ?? "";
 		this.isLoading.set(true);
 		if(!searchStr) {
 			this.lookupView.next(items);
 		} else {
 			let filteredItems:InventoryLookup[] = items;
-			filteredItems = filteredItems.filter(v => {
-				let ret = false;
-				if(containsAsString(v.ItemCode, searchStr)) {
-					ret = true;
-				}
-				if(containsAsString(v.ItemName, searchStr)) {
-					ret = true;
-				}
+			await new Promise<void>((resolve) => {
+				filteredItems = filteredItems.filter(v => {
+					let ret = false;
+					if(containsAsString(v.ItemCode, searchStr)) {
+						ret = true;
+					}
+					if(containsAsString(v.ItemName, searchStr)) {
+						ret = true;
+					}
 
-				return ret;
+					return ret;
+				});
+				resolve();
 			});
 
 			this.lookupView.next(filteredItems);
@@ -81,7 +88,12 @@ export class IvLookupComponent {
 	getLookupsRequest():ApiQueryRequest {
 
 		return new ApiQueryRequest()
-			.setUri(`inventory/items`)
-			.setPageSize(100);
+			.setUri(`inventory/items`);
+	}
+
+	// Handlers
+
+	onSelectedChanged(item:InventoryLookup) {
+		console.log(`New:`, this.selected);
 	}
 }

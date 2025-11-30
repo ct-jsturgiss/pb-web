@@ -5,7 +5,7 @@
 		</div>
 	}
 	@if (isQuerying()) {
-		<p-table class="m-2 pb-3" [value]="[1,2,3]" [scrollable]="true" scrollHeight="flex">
+		<p-table class="m-2 pb-3" [value]="[0,0,0,0,0,0,0,0,0,0,0,0]" [scrollable]="true" scrollHeight="flex">
 			<ng-template #header>
 				<tr>
 					<th>
@@ -35,7 +35,19 @@
 			</div>
 		</div>
 	} @else {
-		<p-table class="m-2 pb-3" [value]="(lookupView | async) ?? []" [scrollable]="true" scrollHeight="flex">
+		<p-table class="m-2 pb-3 pb-table-std" 
+			scrollHeight="flex" 
+			[value]="(lookupView | async) ?? []" 
+			[scrollable]="true" 
+			[paginator]="true" 
+			paginatorPosition="top" 
+			[rowsPerPageOptions]="[25, 50, 75, 100]" 
+			[rows]="25" 
+			[metaKeySelection]="false"
+			dataKey="Id"
+			selectionMode="single"
+			[(selection)]="selected"
+			(selectionChange)="onSelectedChanged($event)">
 			<ng-template #header>
 				<tr>
 					<th>
@@ -47,7 +59,7 @@
 				</tr>
 			</ng-template>
 			<ng-template #body let-item>
-				<tr>
+				<tr [pSelectableRow]="item">
 					<td>{{ item.ItemCode }}</td>
 					<td>{{ item.ItemName }}</td>
 				</tr>
