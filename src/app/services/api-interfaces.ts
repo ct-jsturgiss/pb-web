@@ -42,6 +42,7 @@ export interface ApiQueryRequest {
     uri:string;
     pageSize?:number;
     offset?:number;
+    requestData?:object;
     toJsonBody: () => string;
     handleResponse: ApiResultHandler;
 }
@@ -51,7 +52,9 @@ export class ApiQueryRequest implements ApiQueryRequest {
     constructor() {
 
         this.toJsonBody = function():string {
-            const body:any = {};
+            const body:any = {
+                ...this.requestData
+            };
             if(this.offset) {
                 body["offset"] = this.offset;
             }
@@ -83,6 +86,12 @@ export class ApiQueryRequest implements ApiQueryRequest {
 
     setResponseHandler(handler:ApiResultHandler) {
         this.handleResponse = handler;
+
+        return this;
+    }
+
+    setRequestData(data:object) {
+        this.requestData = data;
 
         return this;
     }
