@@ -9,4 +9,6 @@ import { IvLookupQuestionComponent } from '../iv-lookup-question/iv-lookup-quest
 })
 export class IvLookupQuestionGridComponent {
 
+  // TODO: Add api services/props for lookup loads
+
 }
