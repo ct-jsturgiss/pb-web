@@ -50,3 +50,10 @@ export class MainMenuConstants {
 		}
 	] as const;
 }
+
+export const InventoryConst = {
+	ivLeafs: {
+		firstLevel: 1,
+		lastLevel: 7
+	}
+}
