@@ -14,6 +14,7 @@ import { InventoryLookup, InventoryLookupAdapter } from '../../../models/invento
 import { AsyncPipe } from '@angular/common';
 import { containsAsString } from '../../../services/core/helpers';
 import { FormsModule } from '@angular/forms';
+import { LookupMode } from '../../../models/core/lookup-mode';
 
 @Component({
 	selector: 'pb-iv-lookup',
@@ -32,6 +33,7 @@ export class IvLookupComponent {
 	public lookupView:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
 	public selected:BehaviorSubject<InventoryLookup> = new BehaviorSubject<InventoryLookup>(new InventoryLookup(-1,"",""));
 	public searchPattern = input<string>("");
+	public lookupMode:ModelSignal<LookupMode> = model<LookupMode>(LookupMode.SearchPattern);
 
 	constructor(api:InventoryApiService) {
 		this.m_api = api;
@@ -39,7 +41,6 @@ export class IvLookupComponent {
 	}
 
 	ngOnInit() {
-
 		this.isQuerying.set(true);
 		const sub = this.m_api.listInventoryLookups(this.getLookupsRequest());
 		sub.pipe(first()).subscribe(async v => {
@@ -50,7 +51,12 @@ export class IvLookupComponent {
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		this.filterItems(this.lookupStore.getValue());
+		if(changes["searchPattern"]) {
+			if(this.lookupMode() !== LookupMode.SearchPattern) {
+				this.lookupMode.set(LookupMode.SearchPattern);
+			}
+			this.filterItems(this.lookupStore.getValue());
+		}
 	}
 
 	// Functions
@@ -93,6 +99,6 @@ export class IvLookupComponent {
 	// Handlers
 
 	onSelectedChanged(item:InventoryLookup) {
-		console.log(`New:`, this.selected);
+		console.log(`New:`, item);
 	}
 }
