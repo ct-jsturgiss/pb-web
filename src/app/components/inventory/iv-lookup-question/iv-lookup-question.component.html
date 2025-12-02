@@ -1,8 +1,19 @@
 <div class="grid">
     <div class="col">
-        <p>{{ questionTitle() }}</p>
+        <p>{{ leafTitle() }}</p>
     </div>
 </div>
 <div class="grid mr-5">
-    <p-select class="w-full ml-2" [editable]/>
+    <p-select class="w-full ml-2" [editable] [options]="leafSource()" [(ngModel)]="selectedLeaf" [placeholder]="`${leafSource().length} items`">
+        <ng-template #selectedItem let-leaf>
+            <div class="flex items-center gap-2">
+                <span>{{ leaf["pathName"] }}</span>
+            </div>
+        </ng-template>
+        <ng-template #item let-leaf>
+            <div class="flex items-center gap-2">
+                <span>{{ leaf["pathName"] }}</span>
+            </div>
+        </ng-template>
+    </p-select>
 </div>

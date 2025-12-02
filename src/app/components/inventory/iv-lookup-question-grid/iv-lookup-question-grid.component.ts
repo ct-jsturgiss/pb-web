@@ -1,14 +1,125 @@
-import { Component } from '@angular/core';
+import { Component, input, InputSignal, model, ModelSignal, SimpleChanges } from '@angular/core';
 import { IvLookupQuestionComponent } from '../iv-lookup-question/iv-lookup-question.component';
+import { InventoryApiService } from '../../../services/inventory/iv-api-service';
+import { IvLookupPath } from '../../../models/inventory/inventory-lookup-path';
+import { BehaviorSubject, first, map } from 'rxjs';
+import { IvLookupCache } from '../../../models/inventory/inventory-lookup-cache';
+import { ApiQueryRequest } from '../../../services/api-interfaces';
+import { InventoryLookupAdapter } from '../../../models/inventory/inventory-lookup';
+import { InventoryConst } from '../../../../constants/ui-constants';
 
 @Component({
   selector: 'pb-iv-lookup-question-grid',
   imports: [IvLookupQuestionComponent],
   templateUrl: './iv-lookup-question-grid.component.html',
   styleUrl: './iv-lookup-question-grid.component.scss',
+	providers: [InventoryApiService]
 })
 export class IvLookupQuestionGridComponent {
 
-  // TODO: Add api services/props for lookup loads
+    private m_api:InventoryApiService;
+		private m_leafDict:ModelSignal<IvLookupPath[]>[] = [];
+		private m_selectedLeafDict:ModelSignal<IvLookupPath|null>[] = [];
+		private m_leafCache:IvLookupCache;
+		private m_resetting:boolean = false;
+		
+		// Leaf Sources
+		public leaf1:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);
+		public leaf2:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);
+		public leaf3:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);
+		public leaf4:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);
+		public leaf5:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);
+		public leaf6:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);
+		public leaf7:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);
 
+		// Leaf Selections
+		public selectedLeaf1:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+		public selectedLeaf2:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+		public selectedLeaf3:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+		public selectedLeaf4:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+		public selectedLeaf5:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+		public selectedLeaf6:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+		public selectedLeaf7:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+
+		constructor(
+			api:InventoryApiService
+		) {
+			this.m_api = api;
+			this.m_leafCache = new IvLookupCache();
+
+			// Local Dict
+			this.m_leafDict = [
+				this.leaf1,
+				this.leaf2,
+				this.leaf3,
+				this.leaf4,
+				this.leaf5,
+				this.leaf6,
+				this.leaf7
+			];
+			this.m_selectedLeafDict = [
+				this.selectedLeaf1,
+				this.selectedLeaf2,
+				this.selectedLeaf3,
+				this.selectedLeaf4,
+				this.selectedLeaf5,
+				this.selectedLeaf6,
+				this.selectedLeaf7
+			];
+
+			// Subscriptions
+			for(let i = 0; i < this.m_selectedLeafDict.length; i++) {
+				this.m_selectedLeafDict[i].subscribe(v => this.onLeafSelected.bind(this, v, i + 1)());
+			}
+
+			// Queries
+			this.refreshLeafs();
+		}
+
+		refreshLeafs() {
+			//this.resetLeafs();
+			for(let i = InventoryConst.ivLeafs.firstLevel; i <= InventoryConst.ivLeafs.lastLevel; i++) {
+				this.m_api.listInventoryLookupPaths(this.getLeafListRequestByLevel(i))
+					.pipe(first()).subscribe(arr => {
+						this.m_leafCache.setLeafByLevel(arr, i);
+						if(i === 1) {
+							this.m_leafDict[i - 1].set(this.m_leafCache.getLeafByLevel(i));
+						}
+					});
+			}
+		}
+
+		resetLeafs(resetAt:number) {
+			if(!this.m_resetting) {
+				this.m_resetting = true;
+				for(let i = resetAt; i <= InventoryConst.ivLeafs.lastLevel; i++) {
+					this.m_selectedLeafDict[i - 1].set(null);
+				}
+				this.m_resetting = false;
+			}
+		}
+
+		// Leaf Handlers
+
+		onLeafSelected(leaf:IvLookupPath|null, level:number) {
+			if(!this.m_resetting) {
+				this.resetLeafs(level + 1);
+				const cache = this.m_leafCache.getLeafByLevel(level + 1);
+				const optSet = this.m_leafDict[level];
+				if(leaf) {
+					const filteredItems = cache.filter(l => l.parentId === leaf.pathId);
+					optSet.set(filteredItems);
+				} else {
+					optSet.set([]);
+				}
+			}
+		}
+
+		// Queries
+
+		getLeafListRequestByLevel(level:number) {
+			return new ApiQueryRequest()
+				.setUri(`inventory/lookupleaf`)
+				.setRequestData({"path_level": level});
+		}
 }
