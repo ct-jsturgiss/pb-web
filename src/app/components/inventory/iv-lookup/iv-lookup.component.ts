@@ -1,4 +1,4 @@
-import { Component, input, model, ModelSignal, SimpleChanges } from '@angular/core';
+import { Component, input, InputSignal, model, ModelSignal, SimpleChanges } from '@angular/core';
 
 // primeng
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,10 +15,13 @@ import { AsyncPipe } from '@angular/common';
 import { containsAsString } from '../../../services/core/helpers';
 import { FormsModule } from '@angular/forms';
 import { LookupMode } from '../../../models/core/lookup-mode';
+import { IvLookupQuestionGridComponent } from '../iv-lookup-question-grid/iv-lookup-question-grid.component';
+import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
 
 @Component({
 	selector: 'pb-iv-lookup',
-	imports: [InputTextModule, TableModule, SkeletonModule, AsyncPipe, FormsModule, ProgressSpinnerModule],
+	imports: [InputTextModule, TableModule, SkeletonModule, AsyncPipe, 
+		FormsModule, ProgressSpinnerModule, IvLookupQuestionGridComponent],
 	templateUrl: './iv-lookup.component.html',
 	styleUrl: './iv-lookup.component.scss',
 	providers: [InventoryApiService],
@@ -31,12 +34,15 @@ export class IvLookupComponent {
 	public isLoading:ModelSignal<boolean> = model<boolean>(false);
 	public lookupStore:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
 	public lookupView:BehaviorSubject<InventoryLookup[]> = new BehaviorSubject<InventoryLookup[]>([]);
-	public selected:BehaviorSubject<InventoryLookup> = new BehaviorSubject<InventoryLookup>(new InventoryLookup(-1,"",""));
+	public selected:BehaviorSubject<InventoryLookup> = new BehaviorSubject<InventoryLookup>(new InventoryLookup(-1,"","", ""));
 	public searchPattern = input<string>("");
 	public lookupMode:ModelSignal<LookupMode> = model<LookupMode>(LookupMode.SearchPattern);
+	public leafSelection:BehaviorSubject<IvLookupSelection> = new BehaviorSubject<IvLookupSelection>(new IvLookupSelection([]));
 
 	constructor(api:InventoryApiService) {
 		this.m_api = api;
+
+		// Subscriptions
 		this.selected.subscribe(this.onSelectedChanged);
 	}
 
@@ -62,28 +68,35 @@ export class IvLookupComponent {
 	// Functions
 
 	async filterItems(items:InventoryLookup[]) {
-		const searchStr = this.searchPattern() ?? "";
 		this.isLoading.set(true);
-		if(!searchStr) {
-			this.lookupView.next(items);
-		} else {
-			let filteredItems:InventoryLookup[] = items;
-			await new Promise<void>((resolve) => {
-				filteredItems = filteredItems.filter(v => {
-					let ret = false;
-					if(containsAsString(v.ItemCode, searchStr)) {
-						ret = true;
-					}
-					if(containsAsString(v.ItemName, searchStr)) {
-						ret = true;
-					}
+		if(this.lookupMode() === LookupMode.SearchPattern) {
+			const searchStr = this.searchPattern() ?? "";
+			if(!searchStr) {
+				this.lookupView.next(items);
+			} else {
+				let filteredItems:InventoryLookup[] = items;
+				await new Promise<void>((resolve) => {
+					filteredItems = filteredItems.filter(v => {
+						let ret = false;
+						if(containsAsString(v.itemCode, searchStr)) {
+							ret = true;
+						}
+						if(containsAsString(v.itemName, searchStr)) {
+							ret = true;
+						}
 
-					return ret;
+						return ret;
+					});
+					resolve();
 				});
-				resolve();
-			});
 
-			this.lookupView.next(filteredItems);
+				this.lookupView.next(filteredItems);
+			}
+		} else {
+			const targetPath:string = this.leafSelection.getValue().selectionPath;
+			let items = this.lookupStore.getValue();
+			items = items.filter(l => (l.pathId ?? "").startsWith(targetPath));
+			this.lookupView.next(items);
 		}
 		this.isLoading.set(false);
 	}
@@ -91,7 +104,6 @@ export class IvLookupComponent {
 	// Queries
 
 	getLookupsRequest():ApiQueryRequest {
-
 		return new ApiQueryRequest()
 			.setUri(`inventory/items`);
 	}
@@ -100,5 +112,12 @@ export class IvLookupComponent {
 
 	onSelectedChanged(item:InventoryLookup) {
 		console.log(`New:`, item);
+	}
+
+	onLeafSelectionChanged(selection:IvLookupSelection) {
+		this.lookupMode.set(LookupMode.LeafSearch);
+		this.leafSelection.next(selection);
+		this.filterItems([])
+		console.log(`Selection:`, selection);
 	}
 }
