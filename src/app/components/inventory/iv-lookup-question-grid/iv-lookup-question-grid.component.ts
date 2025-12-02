@@ -1,4 +1,4 @@
-import { Component, input, InputSignal, model, ModelSignal, SimpleChanges } from '@angular/core';
+import { Component, model, ModelSignal, output, OutputEmitterRef } from '@angular/core';
 import { IvLookupQuestionComponent } from '../iv-lookup-question/iv-lookup-question.component';
 import { InventoryApiService } from '../../../services/inventory/iv-api-service';
 import { IvLookupPath } from '../../../models/inventory/inventory-lookup-path';
@@ -7,6 +7,7 @@ import { IvLookupCache } from '../../../models/inventory/inventory-lookup-cache'
 import { ApiQueryRequest } from '../../../services/api-interfaces';
 import { InventoryLookupAdapter } from '../../../models/inventory/inventory-lookup';
 import { InventoryConst } from '../../../../constants/ui-constants';
+import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
 
 @Component({
   selector: 'pb-iv-lookup-question-grid',
@@ -40,6 +41,9 @@ export class IvLookupQuestionGridComponent {
 		public selectedLeaf5:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
 		public selectedLeaf6:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
 		public selectedLeaf7:ModelSignal<IvLookupPath|null> = model<IvLookupPath|null>(null);
+
+		// State Output
+		public leafSelection:OutputEmitterRef<IvLookupSelection> = output<IvLookupSelection>();
 
 		constructor(
 			api:InventoryApiService
@@ -112,6 +116,7 @@ export class IvLookupQuestionGridComponent {
 				} else {
 					optSet.set([]);
 				}
+				this.leafSelection.emit(new IvLookupSelection(this.m_selectedLeafDict.map(l => l())));
 			}
 		}
 
