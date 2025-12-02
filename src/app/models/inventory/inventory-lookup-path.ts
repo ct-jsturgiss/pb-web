@@ -58,7 +58,11 @@ export class IvLookupPath {
             return `/`;
         }
 
-        return [...p.matchAll(RegexConst.Inventory.PathRank)].map(m => m[0]).slice(-1)[0];
+        let id = [...p.matchAll(RegexConst.Inventory.PathRank)].map(m => m[0]).slice(-1)[0];
+        if(id[0] !== localConst.pathDelimiter) {
+            id = localConst.pathDelimiter + id;
+        }
+        return id;
     }
 
     static getParentId(path:string):string {
@@ -67,7 +71,7 @@ export class IvLookupPath {
             return `/`;
         }
 
-        return [...p.matchAll(RegexConst.Inventory.PathRank)].map(m => m[0]).slice(0,-2).join("");
+        return [...p.matchAll(RegexConst.Inventory.PathRank)].map(m => m[0]).slice(0,-1).join("");
     }
 }
 
