@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 // primeng
@@ -7,6 +7,7 @@ import { InputIcon } from "primeng/inputicon"
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from "primeng/button";
 import { Tooltip, TooltipModule } from "primeng/tooltip";
+import { SearchBarStateStore } from './services/search-bar-store';
 
 @Component({
   selector: 'pb-search-bar',
@@ -16,7 +17,15 @@ import { Tooltip, TooltipModule } from "primeng/tooltip";
 })
 export class SearchBarComponent {
 
-  public searchValue = model.required<string>();
+  // Inputs
+  public store = input.required<SearchBarStateStore>();
+
+  // Binding
+  public searchValue = model<string>("");
+
+  ngOnInit() {
+    this.searchValue.subscribe(v => this.store().setSearchText(v));
+  }
 
   // Handlers
   onClearButtonClicked() {
