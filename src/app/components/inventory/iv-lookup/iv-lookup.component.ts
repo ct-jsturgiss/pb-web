@@ -5,6 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from "primeng/table"
 import { SkeletonModule } from "primeng/skeleton"
 import { ProgressSpinnerModule } from "primeng/progressspinner"
+import { CardModule } from "primeng/card"
 
 // pb
 import { InventoryLookup } from '../../../models/inventory/inventory-lookup';
@@ -20,7 +21,9 @@ import { LookupMode } from '../../../models/core/lookup-mode';
 @Component({
 	selector: 'pb-iv-lookup',
 	imports: [InputTextModule, TableModule, SkeletonModule, AsyncPipe,
-		FormsModule, ProgressSpinnerModule, IvLookupQuestionGridComponent, SearchBarComponent],
+		FormsModule, ProgressSpinnerModule, IvLookupQuestionGridComponent, SearchBarComponent,
+		CardModule
+	],
 	templateUrl: './iv-lookup.component.html',
 	styleUrl: './iv-lookup.component.scss',
 })
@@ -35,8 +38,11 @@ export class IvLookupComponent {
 	// Bindables
 	public isQuerying:ModelSignal<boolean> = model<boolean>(false);
 	public isLoading:ModelSignal<boolean> = model<boolean>(false);
-	public get lookupView() { return this.store().lookupView$; }
-	public get selectedLookup() { return this.store().selected$; }
+	public get lookupView$() { return this.store().lookupView$; }
+	public get selectedLookup$() { return this.store().selected$; }
+
+	// Signals
+	public selectedLookup = signal<InventoryLookup|null>(null);
 
 	constructor() {
 	}
@@ -62,7 +68,7 @@ export class IvLookupComponent {
 	}
 
 	onSelectedChanged(item:InventoryLookup|null) {
-		console.log(`Selected:`, item);
+		this.selectedLookup.set(item);
 	}
 
 	onLeafSelectionChanged(selection:IvLookupSelection|null) {
