@@ -3,13 +3,8 @@
 		<h3>Inventory Lookup</h3>
 	</div>
 </div>
-<div class="grid">
-	<div class="col-6">
-		<pb-search-bar [(searchValue)]="searchPattern"/>
-	</div>
-</div>
 <div class="grid h-full pb-10rem">
-	<div class="col">
-		<pb-iv-lookup [searchPattern]="searchPattern()" />
+	<div class="col h-full">
+		<pb-iv-lookup [store]="service" />
 	</div>
 </div>
