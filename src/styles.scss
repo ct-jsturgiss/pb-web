@@ -76,6 +76,12 @@ html, body {
 	min-height: 10rem;
 }
 
+.h-force-11rem {
+	min-height: 11rem;
+	height: 11rem;
+	max-height: 11rem;
+}
+
 .card-std {
 	@extend .light-border-solid, .table-bg-std;
 }
