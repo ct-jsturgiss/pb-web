@@ -4,7 +4,8 @@
     </div>
 </div>
 <div class="grid mr-5">
-    <p-select class="w-full ml-2" [editable] [options]="leafSource()" [(ngModel)]="selectedLeaf" [placeholder]="`${leafSource().length} items`">
+    <div class="col-11">
+        <p-select class="w-full ml-2" [editable] [options]="leafSource()" [(ngModel)]="selectedLeaf" [placeholder]="`${leafSource().length} items`">
         <ng-template #selectedItem let-leaf>
             <div class="flex items-center gap-2">
                 <span>{{ leaf["pathName"] }}</span>
@@ -16,4 +17,10 @@
             </div>
         </ng-template>
     </p-select>
+    </div>
+    <div class="col">
+        @if (showClearButton()) {
+            <p-button severity="primary" icon="pi pi-times" pTooltip="Clear" tooltipPosition="right" positionTop="-15" (onClick)="onClearButtonClicked()"/>
+        }
+    </div>
 </div>
