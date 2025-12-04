@@ -51,6 +51,12 @@ export class MainMenuConstants {
 	] as const;
 }
 
+export const AppConst = {
+	placeholders: {
+		emptyValue: "---"
+	}
+}
+
 export const InventoryConst = {
 	ivLeafs: {
 		firstLevel: 1,

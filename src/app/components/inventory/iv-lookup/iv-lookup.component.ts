@@ -17,6 +17,7 @@ import { AsyncPipe } from '@angular/common';
 import { SearchBarComponent } from '../../core/controls/search-bar/search-bar.component';
 import { SearchBarStateStore } from '../../core/controls/search-bar/services/search-bar-store';
 import { LookupMode } from '../../../models/core/lookup-mode';
+import { AppConst } from '../../../../constants/ui-constants';
 
 @Component({
 	selector: 'pb-iv-lookup',
@@ -28,6 +29,9 @@ import { LookupMode } from '../../../models/core/lookup-mode';
 	styleUrl: './iv-lookup.component.scss',
 })
 export class IvLookupComponent {
+
+	// Constants
+	public get cEmptyValue() { return AppConst.placeholders.emptyValue; }
 
 	// Services
 	public store = input.required<IvLookupService>();

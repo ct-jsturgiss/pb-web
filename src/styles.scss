@@ -2,6 +2,8 @@
 
 :root {
 
+	--pb-app-bar-height: 5vh;
+
 	/* Colors */
 	--caretaker-red: #ed2426;
 	--bg-selection-light: #cccccc;
@@ -28,16 +30,40 @@
 	font-style: normal;
 }
 
-html, body {
+html, 
+body {
 	width: 100vw;
 	height: 100vh;
-	background-color: white;
 	margin: 0;
 	padding: 0;
+	overflow: hidden;
+	position: relative;
 	display: block;
 }
 
+/* Ids */
+
+#app-bar-img {
+	width: 3.5rem;
+}
+
+/* <===> */
+
+// Dummy root class to provide specificity needed to override other styles.
+.pb * {
+	-is-pb: 1;
+}
+
 /* Background Colors */
+
+.surface-100 {
+	background-color: var(--p-surface-100);
+}
+
+.surface-200 {
+	background-color: var(--p-surface-200);
+}
+
 .bg-caretaker-red {
 	background-color: var(--caretaker-red);
 }
@@ -72,18 +98,30 @@ html, body {
 
 /* Sizing */
 
-.min-h-10rem {
-	min-height: 10rem;
+.w-max-7rem {
+	max-width: 7rem;
 }
 
-.h-force-11rem {
-	min-height: 11rem;
-	height: 11rem;
-	max-height: 11rem;
+.w-3rem {
+	width: 3rem;
 }
 
-.card-std {
-	@extend .light-border-solid, .table-bg-std;
+.pb.h-min-0 {
+	min-height: 0;
+}
+
+.h-max-100 {
+	max-height: 100%;
+}
+
+.h-max-screen {
+	max-height: 100vh;
+}
+
+.pb.h-11rem {
+	min-height: 14rem;
+	max-height: 14rem;
+	height: 14rem;
 }
 
 /* Padding */
@@ -98,7 +136,24 @@ html, body {
 	margin-top: 40%;
 }
 
+/* Flex */
+
+.pb.flex-max-content {
+	flex-basis: max-content;
+}
+
 /* App Main Interface */
+
+.title-bar {
+	max-height: var(--pb-app-bar-height);
+	margin: 0;
+	background-color: var(--caretaker-red);
+	//width: 100vw;
+}
+
+.pb.title-bar-img-container {
+	max-width: 5rem;
+}
 
 .title-bar-icon {
 	max-width: 3.75em;
@@ -119,4 +174,27 @@ html, body {
 
 .main-menu-item-selected > button {
 	background-color: var(--caretaker-red);
+}
+
+.main-interface-container {
+	max-height: calc(100vh - var(--pb-app-bar-height));
+}
+
+.pb.main-menu-bar-col {
+	//width: 5rem;
+	max-width: 5rem;
+}
+
+.pb.main-page-host {
+	display: flex;
+}
+
+.pb.main-page-host router-outlet + * {
+	flex: 1 1 auto;
+}
+
+/* Card */
+
+.card-std {
+	@extend .light-border-solid, .table-bg-std;
 }

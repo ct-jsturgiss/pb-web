@@ -1,18 +1,32 @@
-<div id="main-interface" class="h-full w-full max-h-screen max-w-screen">
-	<div class="grid m-0 max-h-4rem w-full bg-caretaker-red">
-		<div class="col-1 align-content-center title-bar-icon">
-			<img src="assets/png/caretaker-tree-white.png" style="width: 3.5em;"/>
+<div id="main-interface" class="d-flex flex-column px-0 vh-100 h-max-screen">
+	<div class="row title-bar">
+		<div class="pb col-1 align-content-center title-bar-img-container ">
+			<div class="p-2 title-bar-icon">
+				<img src="assets/png/caretaker-tree-white.png"/>
+			</div>
 		</div>
-		<div class="col-2 align-content-center title-bar-title">
+		<div class="col-4 align-content-center title-bar-title">
 			<h2 class="m-0 color-white">PRODUCTION BUILDER</h2>
 		</div>
 	</div>
-	<div class="grid m-0 h-full pb-2">
-		<div class="col-1 max-w-max h-full">
-			<app-app-menu/>
+	<div class="row m-0 main-interface-container flex-fill flex-row">
+		<div class="col-1 pb main-menu-bar-col mh-100">
+			<app-app-menu class="pb flex-max-content"/>
 		</div>
-		<div class="col h-full">
+		<div class="col mh-100 pb main-page-host">
 			<ng-content/>
 		</div>
+		<!-- <div class="col d-flex flex-column flex-fill p-0">
+			<div class="d-block h-100 w-100">
+				<div class="d-flex flex-row w-3rem ms-2 h-100 w-100">
+					<app-app-menu class="pb flex-max-content"/>
+					<div>
+						<div class="d-flex flex-column h-100">
+							<ng-content/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
 	</div>
 </div>

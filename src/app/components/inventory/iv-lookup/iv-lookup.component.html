@@ -1,13 +1,13 @@
-<div class="grid">
+<div class="row">
 	<div class="col-6">
 		<pb-search-bar [store]="searchStore"/>
 	</div>
 </div>
-<div class="grid">
-	<div class="xl:col-6 h-full">
-		<div class="card-std min-h-10rem h-full">
+<div class="row flex-fill pb h-min-0 mb-4">
+	<div class="col-6 flex-fill pb h-min-0 h-100">
+		<div class="card-std min-h-10rem my-2 h-100">
 			@if (isLoading()) {
-				<div class="flex justify-center mt-40p">
+				<div class="container mt-40p">
 					<p-progress-spinner strokeWidth="6" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
 				</div>
 			}
@@ -31,21 +31,21 @@
 					</ng-template>
 				</p-table>
 			} @else if (((lookupView$ | async) ?? []).length === 0) {
-				<div class="grid justify-content-center mt-8">
-					<div class="col text-center">
-						<h2>Nothing found for this criteria.</h2>
+				<div class="container mt-5">
+					<div class="row justify-content-center">
+						<div class="col text-center">
+							<h2>Nothing found for this criteria.</h2>
+						</div>
 					</div>
-				</div>
-				<div class="grid justify-content-center">
-					<div class="col text-center">
-						<img src="assets/svg/confused-smile.svg" alt="Confused Smile" width="200em"/>
+					<div class="row justify-content-center">
+						<div class="col text-center">
+							<img src="assets/svg/confused-smile.svg" alt="Confused Smile" width="200em"/>
+						</div>
 					</div>
 				</div>
 			} @else {
-				<p-table class="m-2 pb-3 pb-table-std" 
-					scrollHeight="flex" 
+				<p-table class="m-2 pb-3 pb-table-std pb h-min-0" 
 					[value]="(lookupView$ | async) ?? []" 
-					[scrollable]="true" 
 					[paginator]="true" 
 					paginatorPosition="top" 
 					[rowsPerPageOptions]="[25, 50, 75, 100]" 
@@ -54,7 +54,9 @@
 					dataKey="id"
 					selectionMode="single"
 					[(selection)]="store().selected$"
-					(selectionChange)="onSelectedChanged($event)">
+					(selectionChange)="onSelectedChanged($event)"
+					[scrollable]="true"
+					scrollHeight="flex">
 					<ng-template #header>
 						<tr>
 							<th>
@@ -75,22 +77,26 @@
 			}
 		</div>
 	</div>
-	<div class="xl:col-6">
-		<div>
-			@if (selectedLookup() != null) {
-				<p-card class="card-std h-force-10rem" [header]="selectedLookup()?.itemName">
-					<p class="m-0 p-0"><span class="font-semibold">Item Code: </span>{{ selectedLookup()?.itemCode }}</p>
-					<p class="m-0 mt-1 p-0"><span class="font-semibold">Supplier Code: </span>{{ selectedLookup()?.supplierItemCode ?? "" }}</p>
-					<p class="m-0 mt-1 p-0"><span class="font-semibold">Manufacturer: </span>{{ selectedLookup()?.manufacturerName ?? "" }}</p>
-					<p class="m-0 mt-1 p-0"><span class="font-semibold">Manufac. Desc: </span>{{ selectedLookup()?.manufacturerDescription ?? "" }}</p>
-					<p class="m-0 mt-1 p-0"><span class="font-semibold">List Name: </span>{{ selectedLookup()?.listName ?? "" }}</p>
-				</p-card>
-			} @else {
-				<p-card class="card-std h-force-10rem">
-					<p>-No Selection-</p>
-				</p-card>
-			}
+	<div class="col-6">
+		<div class="row">
+			<div class="pb my-2 h-11rem">
+				@if (selectedLookup() != null) {
+					<p-card class="card-std h-100" [header]="selectedLookup()?.itemName">
+						<p class="m-0 p-0"><span class="font-semibold">Item Code: </span>{{ selectedLookup()?.itemCode }}</p>
+						<p class="m-0 mt-1 p-0"><span class="font-semibold">Supplier Code: </span>{{ selectedLookup()?.supplierItemCode ?? cEmptyValue }}</p>
+						<p class="m-0 mt-1 p-0"><span class="font-semibold">Manufacturer: </span>{{ selectedLookup()?.manufacturerName ?? cEmptyValue }}</p>
+						<p class="m-0 mt-1 p-0"><span class="font-semibold">Manufac. Desc: </span>{{ selectedLookup()?.manufacturerDescription ?? cEmptyValue }}</p>
+						<p class="m-0 mt-1 p-0"><span class="font-semibold">List Name: </span>{{ selectedLookup()?.listName ?? cEmptyValue }}</p>
+					</p-card>
+				} @else {
+					<p-card class="card-std h-100">
+						<p>-No Selection-</p>
+					</p-card>
+				}
+			</div>
 		</div>
-		<pb-iv-lookup-question-grid class="m-8 w-full" [lookupStore]="store()"/>
+		<div class="row">
+			<pb-iv-lookup-question-grid [lookupStore]="store()"/>
+		</div>
 	</div>
 </div>
