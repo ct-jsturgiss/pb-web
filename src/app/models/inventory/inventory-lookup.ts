@@ -26,7 +26,7 @@ export const InventoryLookupAdapter:ModelAdapter<InventoryLookup> = {
             item["path_id"]
         );
 
-        ivl.supplierItemCode = item["supplier_item_code"];
+        ivl.supplierItemCode = item["suppliers_item_code"];
         ivl.manufacturerName = item["manufacturer_name"];
         ivl.manufacturerDescription = item["manufacturer_description"];
         ivl.listName = (item["list_name"] as string)?.trim() === "" ? null : item["list_name"];

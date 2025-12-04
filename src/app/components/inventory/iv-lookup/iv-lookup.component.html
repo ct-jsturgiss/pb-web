@@ -21,10 +21,14 @@
 							<th>
 								Item Description
 							</th>
+							<th>
+								Supplier Item Code
+							</th>
 						</tr>
 					</ng-template>
 					<ng-template #body>
 						<tr>
+							<td><p-skeleton width="10rem" class="mb-2"/></td>
 							<td><p-skeleton width="10rem" class="mb-2"/></td>
 							<td><p-skeleton width="10rem" class="mb-2"/></td>
 						</tr>
@@ -65,12 +69,16 @@
 							<th>
 								Item Description
 							</th>
+							<th>
+								Supplier Item Code
+							</th>
 						</tr>
 					</ng-template>
 					<ng-template #body let-item>
 						<tr [pSelectableRow]="item">
 							<td>{{ item.itemCode }}</td>
 							<td>{{ item.itemName }}</td>
+							<td>{{ item.supplierItemCode ?? cEmptyValue }}</td>
 						</tr>
 					</ng-template>
 				</p-table>
