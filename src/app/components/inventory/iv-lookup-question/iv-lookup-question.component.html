@@ -5,7 +5,7 @@
 </div>
 <div class="row mb-2">
     <div class="col-11">
-        <p-select class="w-100 ms-1" [editable] [options]="leafSource()" [(ngModel)]="selectedLeaf" [placeholder]="`${leafSource().length} items`">
+        <p-select class="w-100 ms-1" [editable] [options]="leafSource()" [(ngModel)]="selectedLeaf" [placeholder]="`${leafSource().length} items`" scrollHeight="300px">
         <ng-template #selectedItem let-leaf>
             <div class="d-flex align-items-center">
                 <span>{{ leaf["pathName"] }}</span>
