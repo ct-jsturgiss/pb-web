@@ -76,12 +76,12 @@ export class AppMenuComponent {
 			this.selectedMenuItem = clickedItem;
 			this.updateSelectedMenuItem();
 			//console.debug(clickedItem);
-			this.messageService.add({
-				severity: "info",
-				summary: "Main Menu Item Clicked",
-				detail: `You've clicked '${clickedItem.label}'`,
-				life: 3000,
-			});
+			// this.messageService.add({
+			// 	severity: "info",
+			// 	summary: "Main Menu Item Clicked",
+			// 	detail: `You've clicked '${clickedItem.label}'`,
+			// 	life: 3000,
+			// });
 			
 		}
 	}
