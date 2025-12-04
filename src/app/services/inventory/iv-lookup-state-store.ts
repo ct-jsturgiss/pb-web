@@ -10,7 +10,7 @@ import { SearchBarStateStore } from "../../components/core/controls/search-bar/s
 import { IvLookupState } from "../../models/inventory/inventory-lookup-state";
 
 @Injectable()
-export class IvLookupService {
+export class IvLookupStateStore {
 
     // Internal State
     private m_state:IvLookupState = IvLookupState.default();

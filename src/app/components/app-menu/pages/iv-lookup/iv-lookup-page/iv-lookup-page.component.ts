@@ -5,7 +5,7 @@ import { Component, model, signal, SimpleChanges } from '@angular/core';
 // pb
 import { IvLookupComponent } from "../../../../inventory/iv-lookup/iv-lookup.component";
 import { SearchBarComponent } from "../../../../core/controls/search-bar/search-bar.component";
-import { IvLookupService } from '../../../../../services/inventory/iv-lookup-service';
+import { IvLookupStateStore } from '../../../../../services/inventory/iv-lookup-state-store';
 import { IvLookupState } from '../../../../../models/inventory/inventory-lookup-state';
 import { LookupMode } from '../../../../../models/core/lookup-mode';
 import { SearchBarStateStore } from '../../../../core/controls/search-bar/services/search-bar-store';
@@ -15,13 +15,13 @@ import { SearchBarStateStore } from '../../../../core/controls/search-bar/servic
   imports: [IvLookupComponent],
   templateUrl: './iv-lookup-page.component.html',
   styleUrl: './iv-lookup-page.component.scss',
-  providers: [IvLookupService, SearchBarStateStore]
+  providers: [IvLookupStateStore, SearchBarStateStore]
 })
 export class IvLookupPageComponent {
 
-    public service:IvLookupService;
+    public service:IvLookupStateStore;
 
-    constructor(service:IvLookupService) {
+    constructor(service:IvLookupStateStore) {
       this.service = service;
     }
 }

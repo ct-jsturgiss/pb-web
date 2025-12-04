@@ -12,7 +12,7 @@ import { InventoryLookup } from '../../../models/inventory/inventory-lookup';
 import { FormsModule } from '@angular/forms';
 import { IvLookupQuestionGridComponent } from '../iv-lookup-question-grid/iv-lookup-question-grid.component';
 import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
-import { IvLookupService } from '../../../services/inventory/iv-lookup-service';
+import { IvLookupStateStore } from '../../../services/inventory/iv-lookup-state-store';
 import { AsyncPipe } from '@angular/common';
 import { SearchBarComponent } from '../../core/controls/search-bar/search-bar.component';
 import { SearchBarStateStore } from '../../core/controls/search-bar/services/search-bar-store';
@@ -34,7 +34,7 @@ export class IvLookupComponent {
 	public get cEmptyValue() { return AppConst.placeholders.emptyValue; }
 
 	// Services
-	public store = input.required<IvLookupService>();
+	public store = input.required<IvLookupStateStore>();
 
 	// Props
 	public get searchStore():SearchBarStateStore { return this.store().searchStore; }
