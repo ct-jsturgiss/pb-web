@@ -2,9 +2,10 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ApiQueryRequest, ApiQueryResult } from "./api-interfaces";
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment.development";
-import { catchError, Observable, of, retry } from "rxjs";
+import { catchError, first, Observable, of, retry } from "rxjs";
 import { ApiConst } from "../../constants/api-constants";
 import { asStringEqual } from "./core/helpers";
+import { GlobalStateStore } from "./core/global-state-store";
 
 export interface IPbApi {
     postQuery:(query:ApiQueryRequest) => Observable<ApiQueryResult>;
@@ -13,7 +14,18 @@ export interface IPbApi {
 @Injectable({ providedIn: "root"})
 export class PbApi implements IPbApi {
 
-    constructor(protected http:HttpClient) {}
+    // Services
+    protected m_http:HttpClient;
+
+    public globalStateStore:GlobalStateStore;
+
+    constructor(
+        globalStateStore:GlobalStateStore,
+        http:HttpClient
+    ) {
+        this.globalStateStore = globalStateStore;
+        this.m_http = http;
+    }
 
     failedUnreachable():Observable<ApiQueryResult> {
         return of({
@@ -27,12 +39,14 @@ export class PbApi implements IPbApi {
     postQuery(query:ApiQueryRequest):Observable<ApiQueryResult> {
         try {
             const fullUri:string = environment.apiEndpoint + query.uri;
-            return this.http.post<ApiQueryResult>(fullUri, query.toJsonBody(), {
+            return this.m_http.post<ApiQueryResult>(fullUri, query.toJsonBody(), {
                 headers: {
                     "Content-Type": "application/json"
                 },
                 timeout: ApiConst.defaults.requestTimeout
             }).pipe(
+                retry(1),
+                first(),
                 // Try to capture network failures, otherwise pass on.
                 catchError((errorResponse:HttpErrorResponse, obs) => {
                     if(errorResponse.status === ApiConst.ngResponseCodes.unreachable) {
@@ -44,7 +58,7 @@ export class PbApi implements IPbApi {
                     }
                     return obs;
                 }),
-            retry(1));
+            );
         } catch(err) {
             throw err;
         }

@@ -6,14 +6,13 @@ import { InventoryLookup, InventoryLookupAdapter } from "../../models/inventory/
 import { HttpClient } from "@angular/common/http";
 import { IvLookupPath, IvLookupPathAdapter } from "../../models/inventory/inventory-lookup-path";
 import { response } from "express";
+import { GlobalStateStore } from "../core/global-state-store";
 
 @Injectable({ providedIn: "root"})
 export class InventoryApiService extends PbApi {
 
-    constructor(
-        protected override http:HttpClient
-    ) {
-        super(http);
+    constructor(globalStateStore:GlobalStateStore, http:HttpClient) {
+        super(globalStateStore, http);
     }
 
     listInventoryLookups(query:ApiQueryRequest): Observable<QueryData<InventoryLookup>> {

@@ -23,6 +23,7 @@ export class IvLookupQuestionGridComponent {
 	private m_selectedLeafDict:ModelSignal<IvLookupPath|null>[] = [];
 	private m_leafCache:IvLookupCache = new IvLookupCache();
 	private m_resetting:boolean = false;
+	private get globalStateStore() { return this.lookupStore().api.globalStateStore; }
 	
 	// Store
 	public lookupStore = input.required<IvLookupStateStore>();
@@ -81,7 +82,7 @@ export class IvLookupQuestionGridComponent {
 	refreshLeafs() {
 		//this.resetLeafs();
 		for(let i = InventoryConst.ivLeafs.firstLevel; i <= InventoryConst.ivLeafs.lastLevel; i++) {
-			if(this.lookupStore().apiError) { return; }
+			if(this.globalStateStore.getApiErrorState().hasErrors) { return; }
 			this.lookupStore().api.listInventoryLookupPaths(this.getLeafListRequestByLevel(i))
 				.pipe(first()).subscribe(res => this.handleLeafQuery(res, i));
 		}
@@ -105,6 +106,10 @@ export class IvLookupQuestionGridComponent {
 	// Leaf Handlers
 
 	handleLeafQuery(value:QueryData<IvLookupPath>, leafLevel:number) {
+		if(this.globalStateStore.getApiErrorState().hasErrors) { return; }
+		if(value.response.isFatal) {
+			this.globalStateStore.raiseApiFatalError();
+		}
 		this.m_leafCache.setLeafByLevel(value.records, leafLevel);
 		if(leafLevel === 1) {
 			this.m_leafDict[leafLevel - 1].set(this.m_leafCache.getLeafByLevel(leafLevel));

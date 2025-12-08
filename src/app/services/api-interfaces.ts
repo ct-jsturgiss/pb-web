@@ -1,6 +1,24 @@
-import { ApiErrorState } from "../../constants/api-constants";
+import { ApiRequestError } from "../../constants/api-constants";
 
 export type ApiResultHandler = (response:ApiQueryResult) => void;
+
+export interface ApiErrorState {
+    hasErrors:boolean;
+    userNotified:boolean;
+}
+
+export class ApiErrorState implements ApiErrorState {
+
+    constructor(){
+        this.hasErrors = false;
+        this.userNotified = false;
+    }
+
+    static default():ApiErrorState {
+        return new ApiErrorState();
+    }
+
+}
 
 export interface QueryData<T> {
     response:ApiQueryResult;
@@ -21,7 +39,7 @@ export interface ApiQueryResult {
     message?:string[];
     errors?:string[];
     data?:ApiQueryRecords;
-    stateCode?:ApiErrorState
+    stateCode?:ApiRequestError
 }
 
 export class ApiQueryResult implements ApiQueryResult {

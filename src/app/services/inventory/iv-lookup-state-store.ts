@@ -28,7 +28,6 @@ export class IvLookupStateStore {
     public searchStore:SearchBarStateStore;
     public appDialogStore:AppDialogStateStore;
 
-    public apiError:boolean = false;
     public lookupStore$:Observable<InventoryLookup[]> = this.m_lookupStore.asObservable();
     public lookupView$:Observable<InventoryLookup[]> = this.m_lookupView.asObservable();
     public selected$:Observable<InventoryLookup|null> = this.m_selected.asObservable();
@@ -121,21 +120,18 @@ export class IvLookupStateStore {
 	//===> Queries
     
     refreshLookups(after:EmptyLambdaType = EmptyLambda) {
-
         this.api.listInventoryLookups(this.getLookupsRequest())
             .pipe(first())
-            .subscribe(v => this.handleRefreshLookups(v, after));
-            
+            .subscribe(v => this.handleRefreshLookups(v, after));   
     }
 
     handleRefreshLookups(value:QueryData<InventoryLookup>, after:EmptyLambdaType = EmptyLambda) {
         if(value.response.isFatal || value.response.isError) {
             // this.setStore([]);
             // this.filterItems();
-            this.apiError = true;
-            this.appDialogStore.showApiFailure();
+            this.api.globalStateStore.raiseApiFatalError();
         } else {
-            this.apiError = false;
+            this.api.globalStateStore.resetApiError();
             this.setStore(value.records);
             this.filterItems();
         }

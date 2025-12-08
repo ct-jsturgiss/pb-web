@@ -1,4 +1,4 @@
-export interface ApiErrorState {
+export interface ApiRequestError {
     msg:string;
     code:number;
 }
@@ -14,7 +14,7 @@ export const ApiConst = {
         serverUnreachable: {
             msg: "Server is unreachable.",
             code: 0x000001
-        } as ApiErrorState,
+        } as ApiRequestError,
     },
     ngResponseCodes: {
         unreachable: 0,
