@@ -74,4 +74,13 @@ export class AppDialogStateStore {
             }
         }
     }
+
+    showApiFailure() { 
+        this.enqueue({
+            dialogLevel: DialogLevel.Fatal,
+            header: "API Failure",
+            message: "Failed to retrieve lookups due to a network or communication failure to the API."
+        } as AppDialogState);
+        this.next();
+    }
 }
