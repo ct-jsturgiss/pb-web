@@ -3,11 +3,13 @@ import { BehaviorSubject, first, Observable } from "rxjs";
 import { InventoryLookup } from "../../models/inventory/inventory-lookup";
 import { LookupMode } from "../../models/core/lookup-mode";
 import { InventoryApiService } from "./iv-api-service";
-import { ApiQueryRequest } from "../api-interfaces";
+import { ApiQueryRequest, QueryData } from "../api-interfaces";
 import { containsAsString } from "../core/helpers";
 import { IvLookupSelection } from "../../models/inventory/inventory-lookup-selection";
 import { SearchBarStateStore } from "../../components/core/controls/search-bar/services/search-bar-store";
 import { IvLookupState } from "../../models/inventory/inventory-lookup-state";
+import { EmptyLambda, EmptyLambdaType } from "../../models/core/common-types";
+import { AppDialogStateStore } from "../../components/core/dialogs/app-dialog/services/app-dialog-stateStore";
 
 @Injectable()
 export class IvLookupStateStore {
@@ -24,7 +26,9 @@ export class IvLookupStateStore {
 
     // Services
     public searchStore:SearchBarStateStore;
+    public appDialogStore:AppDialogStateStore;
 
+    public apiError:boolean = false;
     public lookupStore$:Observable<InventoryLookup[]> = this.m_lookupStore.asObservable();
     public lookupView$:Observable<InventoryLookup[]> = this.m_lookupView.asObservable();
     public selected$:Observable<InventoryLookup|null> = this.m_selected.asObservable();
@@ -34,19 +38,23 @@ export class IvLookupStateStore {
 
     public api:InventoryApiService;
 
-    constructor(api:InventoryApiService, searchStore:SearchBarStateStore) {
+    constructor(api:InventoryApiService, searchStore:SearchBarStateStore, appDialog:AppDialogStateStore) {
         this.api = api;
         this.searchStore = searchStore;
+        this.appDialogStore = appDialog;
 
         this.serviceInit();
     }
     
     serviceInit() {
+        // Lookups
         this.lookupStore$.subscribe(v => this.m_state.lookupStore = v);
         this.lookupView$.subscribe(v => this.m_state.lookupView = v);
         this.selected$.subscribe(v => this.m_state.selected = v);
         this.mode$.subscribe(v => this.m_state.mode = v);
         this.leafSelection$.subscribe(v => this.m_state.leafSelection = v);
+
+        // Search Store
         this.searchStore.searchText$.subscribe(v => this.m_state.searchPattern = v);
     }
 
@@ -106,24 +114,32 @@ export class IvLookupStateStore {
 	}
 
     //<===
+
+    //===> Dialogs
+    //<===
     
 	//===> Queries
     
-    refreshLookups(after:() => void = () => {}) {
+    refreshLookups(after:EmptyLambdaType = EmptyLambda) {
 
         this.api.listInventoryLookups(this.getLookupsRequest())
             .pipe(first())
-            .subscribe(v => {
-                this.setStore(v);
-                this.filterItems();
-                after();
-            });
-        // const sub = this.m_api.listInventoryLookups(this.getLookupsRequest());
-        // sub.pipe(first()).subscribe(async v => {
-        //     this.lookupStore.next(v);
-        //     await this.filterItems(v);
-        //     this.isQuerying.set(false);
-        // });
+            .subscribe(v => this.handleRefreshLookups(v, after));
+            
+    }
+
+    handleRefreshLookups(value:QueryData<InventoryLookup>, after:EmptyLambdaType = EmptyLambda) {
+        if(value.response.isFatal || value.response.isError) {
+            // this.setStore([]);
+            // this.filterItems();
+            this.apiError = true;
+            this.appDialogStore.showApiFailure();
+        } else {
+            this.apiError = false;
+            this.setStore(value.records);
+            this.filterItems();
+        }
+        after();
     }
 
 	getLookupsRequest():ApiQueryRequest {

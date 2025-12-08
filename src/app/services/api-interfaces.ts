@@ -1,4 +1,11 @@
+import { ApiErrorState } from "../../constants/api-constants";
+
 export type ApiResultHandler = (response:ApiQueryResult) => void;
+
+export interface QueryData<T> {
+    response:ApiQueryResult;
+    records:T[];
+}
 
 export interface ApiQueryRecords {
     offset?:number;
@@ -14,6 +21,7 @@ export interface ApiQueryResult {
     message?:string[];
     errors?:string[];
     data?:ApiQueryRecords;
+    stateCode?:ApiErrorState
 }
 
 export class ApiQueryResult implements ApiQueryResult {
@@ -44,7 +52,6 @@ export interface ApiQueryRequest {
     offset?:number;
     requestData?:object;
     toJsonBody: () => string;
-    handleResponse: ApiResultHandler;
 }
 
 export class ApiQueryRequest implements ApiQueryRequest {
@@ -80,12 +87,6 @@ export class ApiQueryRequest implements ApiQueryRequest {
 
     setOffset(offset?:number) {
         this.offset = offset;
-
-        return this;
-    }
-
-    setResponseHandler(handler:ApiResultHandler) {
-        this.handleResponse = handler;
 
         return this;
     }

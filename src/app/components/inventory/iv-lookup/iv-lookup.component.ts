@@ -57,9 +57,11 @@ export class IvLookupComponent {
 		this.store().selected$.subscribe(v => this.onSelectedChanged(v));
 		this.store().leafSelection$.subscribe(v => this.onLeafSelectionChanged(v));
 
+		this.isLoading.set(true);
 		this.isQuerying.set(true);
 		this.store().refreshLookups(() => {
 			this.isQuerying.set(false);
+			this.isLoading.set(false);
 			console.log("Initial refresh done");
 		});
 	}

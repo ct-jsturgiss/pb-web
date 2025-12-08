@@ -2,10 +2,9 @@ import { Component, input, model, ModelSignal, output, OutputEmitterRef } from '
 import { IvLookupQuestionComponent } from '../iv-lookup-question/iv-lookup-question.component';
 import { InventoryApiService } from '../../../services/inventory/iv-api-service';
 import { IvLookupPath } from '../../../models/inventory/inventory-lookup-path';
-import { BehaviorSubject, first, map } from 'rxjs';
+import { first } from 'rxjs';
 import { IvLookupCache } from '../../../models/inventory/inventory-lookup-cache';
-import { ApiQueryRequest } from '../../../services/api-interfaces';
-import { InventoryLookupAdapter } from '../../../models/inventory/inventory-lookup';
+import { ApiQueryRequest, QueryData } from '../../../services/api-interfaces';
 import { InventoryConst } from '../../../../constants/ui-constants';
 import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
 import { IvLookupStateStore } from '../../../services/inventory/iv-lookup-state-store';
@@ -82,13 +81,9 @@ export class IvLookupQuestionGridComponent {
 	refreshLeafs() {
 		//this.resetLeafs();
 		for(let i = InventoryConst.ivLeafs.firstLevel; i <= InventoryConst.ivLeafs.lastLevel; i++) {
+			if(this.lookupStore().apiError) { return; }
 			this.lookupStore().api.listInventoryLookupPaths(this.getLeafListRequestByLevel(i))
-				.pipe(first()).subscribe(arr => {
-					this.m_leafCache.setLeafByLevel(arr, i);
-					if(i === 1) {
-						this.m_leafDict[i - 1].set(this.m_leafCache.getLeafByLevel(i));
-					}
-				});
+				.pipe(first()).subscribe(res => this.handleLeafQuery(res, i));
 		}
 	}
 
@@ -108,6 +103,13 @@ export class IvLookupQuestionGridComponent {
 	}
 
 	// Leaf Handlers
+
+	handleLeafQuery(value:QueryData<IvLookupPath>, leafLevel:number) {
+		this.m_leafCache.setLeafByLevel(value.records, leafLevel);
+		if(leafLevel === 1) {
+			this.m_leafDict[leafLevel - 1].set(this.m_leafCache.getLeafByLevel(leafLevel));
+		}
+	}
 
 	onLeafSelected(leaf:IvLookupPath|null, level:number) {
 		if(!this.m_resetting) {
