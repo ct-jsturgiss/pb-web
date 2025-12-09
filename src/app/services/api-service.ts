@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ApiQueryRequest, ApiQueryResult } from "./api-interfaces";
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment.development";
-import { catchError, first, Observable, of, retry } from "rxjs";
+import { catchError, first, Observable, of, retry, throwError } from "rxjs";
 import { ApiConst } from "../../constants/api-constants";
 import { asStringEqual } from "./core/helpers";
 import { GlobalStateStore } from "./core/global-state-store";
@@ -27,13 +27,22 @@ export class PbApi implements IPbApi {
         this.m_http = http;
     }
 
-    failedUnreachable():Observable<ApiQueryResult> {
-        return of({
+    unknownRequestError():ApiQueryResult {
+        return {
+            isError: true,
+            isSuccess: false,
+            isFatal: true,
+            stateCode: ApiConst.errorCodes.unknownError,
+        } as ApiQueryResult;
+    }
+
+    failedUnreachable():ApiQueryResult {
+        return {
             isError: true,
             isSuccess: false,
             isFatal: true,
             stateCode: ApiConst.errorCodes.serverUnreachable,
-        } as ApiQueryResult);
+        } as ApiQueryResult;
     }
 
     postQuery(query:ApiQueryRequest):Observable<ApiQueryResult> {
@@ -46,18 +55,19 @@ export class PbApi implements IPbApi {
                 timeout: ApiConst.defaults.requestTimeout
             }).pipe(
                 retry(1),
-                first(),
                 // Try to capture network failures, otherwise pass on.
                 catchError((errorResponse:HttpErrorResponse, obs) => {
                     if(errorResponse.status === ApiConst.ngResponseCodes.unreachable) {
                         const err = errorResponse.error;
                         if(err && (err.total || (asStringEqual(err.message, ApiConst.errorMsgs.fetchFailure)))) {
                             // This should be a network error per ng docs.
-                            return this.failedUnreachable();
+                            return throwError(() => this.failedUnreachable());
                         }
                     }
-                    return obs;
+
+                    return throwError(() => this.unknownRequestError());
                 }),
+                first(),
             );
         } catch(err) {
             throw err;
