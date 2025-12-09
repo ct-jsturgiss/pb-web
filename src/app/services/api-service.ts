@@ -66,8 +66,7 @@ export class PbApi implements IPbApi {
                     }
 
                     return throwError(() => this.unknownRequestError());
-                }),
-                first(),
+                })
             );
         } catch(err) {
             throw err;
