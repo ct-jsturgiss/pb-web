@@ -1,4 +1,4 @@
-import { Component, input, model, ModelSignal, signal } from '@angular/core';
+import { AfterContentInit, Component, input, model, ModelSignal, OnDestroy, OnInit, signal } from '@angular/core';
 
 // primeng
 import { InputTextModule } from 'primeng/inputtext';
@@ -18,6 +18,7 @@ import { SearchBarComponent } from '../../core/controls/search-bar/search-bar.co
 import { SearchBarStateStore } from '../../core/controls/search-bar/services/search-bar-store';
 import { LookupMode } from '../../../models/core/lookup-mode';
 import { AppConst } from '../../../../constants/ui-constants';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'pb-iv-lookup',
@@ -28,7 +29,10 @@ import { AppConst } from '../../../../constants/ui-constants';
 	templateUrl: './iv-lookup.component.html',
 	styleUrl: './iv-lookup.component.scss',
 })
-export class IvLookupComponent {
+export class IvLookupComponent implements OnInit, OnDestroy {
+
+	// Subscriptions
+	private m_subs:Subscription = new Subscription();
 
 	// Constants
 	public get cEmptyValue() { return AppConst.placeholders.emptyValue; }
@@ -51,11 +55,11 @@ export class IvLookupComponent {
 	constructor() {
 	}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		console.log("Init");
-		this.searchStore.searchText$.subscribe(v => this.onSearchPatternChanged(v));
-		this.store().selected$.subscribe(v => this.onSelectedChanged(v));
-		this.store().leafSelection$.subscribe(v => this.onLeafSelectionChanged(v));
+		this.m_subs.add(this.searchStore.searchText$.subscribe(v => this.onSearchPatternChanged(v)));
+		this.m_subs.add(this.store().selected$.subscribe(v => this.onSelectedChanged(v)));
+		this.m_subs.add(this.store().leafSelection$.subscribe(v => this.onLeafSelectionChanged(v)));
 
 		this.isLoading.set(true);
 		this.isQuerying.set(true);
@@ -64,6 +68,10 @@ export class IvLookupComponent {
 			this.isLoading.set(false);
 			console.log("Initial refresh done");
 		});
+	}
+
+	ngOnDestroy(): void {
+		this.m_subs.unsubscribe();
 	}
 
 	// Handlers
