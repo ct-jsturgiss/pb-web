@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, first, Observable } from "rxjs";
+import { BehaviorSubject, first, Observable, Subscription } from "rxjs";
 import { InventoryLookup } from "../../models/inventory/inventory-lookup";
 import { LookupMode } from "../../models/core/lookup-mode";
 import { InventoryApiService } from "./iv-api-service";
-import { ApiQueryRequest, QueryData } from "../api-interfaces";
+import { ApiQueryRequest, ApiQueryResult, QueryData } from "../api-interfaces";
 import { containsAsString } from "../core/helpers";
 import { IvLookupSelection } from "../../models/inventory/inventory-lookup-selection";
 import { SearchBarStateStore } from "../../components/core/controls/search-bar/services/search-bar-store";
@@ -122,20 +122,21 @@ export class IvLookupStateStore {
     refreshLookups(after:EmptyLambdaType = EmptyLambda) {
         this.api.listInventoryLookups(this.getLookupsRequest())
             .pipe(first())
-            .subscribe(v => this.handleRefreshLookups(v, after));   
+            .subscribe({
+                next: v => this.handleRefreshLookups(v),
+                error: err => this.handleRefreshLookupsError(err),
+                complete: after
+            });
     }
 
-    handleRefreshLookups(value:QueryData<InventoryLookup>, after:EmptyLambdaType = EmptyLambda) {
-        if(value.response.isFatal || value.response.isError) {
-            // this.setStore([]);
-            // this.filterItems();
-            this.api.globalStateStore.raiseApiFatalError();
-        } else {
-            this.api.globalStateStore.resetApiError();
-            this.setStore(value.records);
-            this.filterItems();
-        }
-        after();
+    handleRefreshLookups(value:QueryData<InventoryLookup>) {
+        this.api.globalStateStore.resetApiError();
+        this.setStore(value.records);
+        this.filterItems();
+    }
+
+    handleRefreshLookupsError(err:ApiQueryResult) {
+        this.api.globalStateStore.raiseApiFatalError();
     }
 
 	getLookupsRequest():ApiQueryRequest {
