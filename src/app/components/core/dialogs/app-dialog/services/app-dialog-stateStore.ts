@@ -55,7 +55,6 @@ export class AppDialogStateStore {
     }
 
     next() {
-        let isDefault = false;
         let thisMsg = this.m_pending.shift();
         if(thisMsg) {
             const closeHandler = thisMsg.onClose ?? (() => {});
