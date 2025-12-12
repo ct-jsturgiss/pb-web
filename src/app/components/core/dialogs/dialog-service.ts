@@ -14,6 +14,19 @@ export class AppDialogService {
         this.service = service;
     }
 
+    showNotice(header:string, message:string):DynamicDialogRef|null {
+        return this.service.open(AppDialogComponent, {
+            header: header,
+            dismissableMask: true,
+            closable: true,
+            width: '50vw',
+            modal: true,
+            inputValues: {
+                message: message
+            }
+        });
+    }
+
     showApiUnavailable():DynamicDialogRef|null {
         return this.service.open(AppDialogComponent, {
             header: "API Unavailable",

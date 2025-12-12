@@ -24,13 +24,13 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppDialogService } from '../../core/dialogs/dialog-service';
 import { ApiConst } from '../../../../constants/api-constants';
 import { DialogModule } from 'primeng/dialog';
+import { Button } from "primeng/button";
 
 @Component({
 	selector: 'pb-iv-lookup',
 	imports: [InputTextModule, TableModule, SkeletonModule, AsyncPipe,
-		FormsModule, ProgressSpinnerModule, IvLookupQuestionGridComponent, SearchBarComponent,
-		CardModule, DialogModule
-	],
+    FormsModule, ProgressSpinnerModule, IvLookupQuestionGridComponent, SearchBarComponent,
+    CardModule, DialogModule, Button],
 	templateUrl: './iv-lookup.component.html',
 	styleUrl: './iv-lookup.component.scss',
 	providers: [AppDialogService]
@@ -114,6 +114,10 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 	}
 
 	// Handlers
+
+	onViewLookupClicked() {
+		this.dialogService.showNotice("View Lookup", "I don't do anything right now.. but I will :)");
+	}
 
 	onSearchPatternChanged(value:string) {
 		this.store().setMode(LookupMode.SearchPattern);
