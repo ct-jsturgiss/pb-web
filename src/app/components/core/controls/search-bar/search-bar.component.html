@@ -1,11 +1,11 @@
 <div>
     <p-iconField>
         <div class="row">
-            <div class="col-10">
+            <div class="col">
                 <p-inputIcon class="pi pi-search"/>
                 <input type="text" pInputText placeholder="Search" class="w-100" [(ngModel)]="searchValue"/>
             </div>
-            <div class="col ps-0">
+            <div class="col-1 ps-0" style="min-width: 3.5rem; max-width: 3.5rem;">
                 <p-button severity="primary" icon="pi pi-times" pTooltip="Clear" tooltipPosition="right" positionTop="-15" (onClick)="onClearButtonClicked()"></p-button>
             </div>
         </div>
