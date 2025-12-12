@@ -8,14 +8,14 @@ import { AppDialogComponent } from "./app-dialog/app-dialog.component";
 export class AppDialogService {
 
     // Services
-    public service:DialogService;
+    public primeService:DialogService;
 
     constructor(service:DialogService) {
-        this.service = service;
+        this.primeService = service;
     }
 
     showNotice(header:string, message:string):DynamicDialogRef|null {
-        return this.service.open(AppDialogComponent, {
+        return this.primeService.open(AppDialogComponent, {
             header: header,
             dismissableMask: true,
             closable: true,
@@ -28,7 +28,7 @@ export class AppDialogService {
     }
 
     showApiUnavailable():DynamicDialogRef|null {
-        return this.service.open(AppDialogComponent, {
+        return this.primeService.open(AppDialogComponent, {
             header: "API Unavailable",
             dismissableMask: true,
             closable: true,
