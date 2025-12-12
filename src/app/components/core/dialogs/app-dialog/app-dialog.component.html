@@ -1,12 +1,5 @@
-<div class="d-flex container">
-    <p-dialog [header]="msg().header" [modal]="true" [(visible)]="msg().visible" [style]="{ width: '50rem' }" (onHide)="msg().onClose()">
-        <div class="d-flex flex-column container">
-            <div class="row">
-
-            </div>
-            <div class="row">
-                <p>{{msg().message}}</p>
-            </div>
-        </div>
-    </p-dialog>
+<div class="d-flex flex-column container">
+    <div class="row">
+        <p>{{ message() }}</p>
+    </div>
 </div>
