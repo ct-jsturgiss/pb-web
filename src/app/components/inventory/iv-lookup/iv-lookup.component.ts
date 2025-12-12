@@ -95,6 +95,7 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 	}
 
 	onLookupsRefreshError(error:ApiQueryResult) {
+		this.selectedLookup.set(null);
 		if(error.stateCode?.code === ApiConst.errorCodes.serverUnreachable.code) {
 			this.m_dialogRef = this.dialogService.showApiUnavailable();
 		} else {
@@ -106,6 +107,7 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 	}
 
 	onLookupsRefreshComplete() {
+		this.selectedLookup.set(null);
 		this.isQuerying.set(false);
 		this.isLoading.set(false);
 		this.store().refreshLeafCache();
@@ -123,6 +125,7 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 	}
 
 	onLeafSelectionChanged(selection:IvLookupSelection|null) {
+		this.selectedLookup.set(null);
 		this.store().setMode(LookupMode.LeafSearch);
 		this.store().filterItems();
 	}
