@@ -26,7 +26,6 @@ export class IvLookupStateStore {
 
     // Services
     public searchStore:SearchBarStateStore;
-    public appDialogStore:AppDialogStateStore;
 
     public lookupStore$:Observable<InventoryLookup[]> = this.m_lookupStore.asObservable();
     public lookupView$:Observable<InventoryLookup[]> = this.m_lookupView.asObservable();
@@ -37,10 +36,9 @@ export class IvLookupStateStore {
 
     public api:InventoryApiService;
 
-    constructor(api:InventoryApiService, searchStore:SearchBarStateStore, appDialog:AppDialogStateStore) {
+    constructor(api:InventoryApiService, searchStore:SearchBarStateStore) {
         this.api = api;
         this.searchStore = searchStore;
-        this.appDialogStore = appDialog;
 
         this.serviceInit();
     }
