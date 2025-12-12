@@ -1,10 +1,10 @@
-import { Component, input, model, ModelSignal, output, OutputEmitterRef } from '@angular/core';
+import { Component, input, model, ModelSignal, OnDestroy, OnInit, output, OutputEmitterRef } from '@angular/core';
+
 import { IvLookupQuestionComponent } from '../iv-lookup-question/iv-lookup-question.component';
-import { InventoryApiService } from '../../../services/inventory/iv-api-service';
 import { IvLookupPath } from '../../../models/inventory/inventory-lookup-path';
-import { first } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { IvLookupCache } from '../../../models/inventory/inventory-lookup-cache';
-import { ApiQueryRequest, QueryData } from '../../../services/api-interfaces';
+import { QueryData } from '../../../services/api-interfaces';
 import { InventoryConst } from '../../../../constants/ui-constants';
 import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
 import { IvLookupStateStore } from '../../../services/inventory/iv-lookup-state-store';
@@ -17,13 +17,15 @@ import { IvLookupStateStore } from '../../../services/inventory/iv-lookup-state-
   templateUrl: './iv-lookup-question-grid.component.html',
   styleUrl: './iv-lookup-question-grid.component.scss',
 })
-export class IvLookupQuestionGridComponent {
+export class IvLookupQuestionGridComponent implements OnInit, OnDestroy {
+
+	// Subjects
+	private m_onDestroy = new Subject<void>();
 
 	private m_leafDict:ModelSignal<IvLookupPath[]>[] = [];
 	private m_selectedLeafDict:ModelSignal<IvLookupPath|null>[] = [];
 	private m_leafCache:IvLookupCache = new IvLookupCache();
 	private m_resetting:boolean = false;
-	private get globalStateStore() { return this.lookupStore().api.globalStateStore; }
 	
 	// Store
 	public lookupStore = input.required<IvLookupStateStore>();
@@ -48,7 +50,7 @@ export class IvLookupQuestionGridComponent {
 
 	constructor() {}
 
-	ngOnInit() {
+	ngOnInit(): void {
 
 		// Local Dict
 		this.m_leafDict = [
@@ -74,18 +76,11 @@ export class IvLookupQuestionGridComponent {
 		for(let i = 0; i < this.m_selectedLeafDict.length; i++) {
 			this.m_selectedLeafDict[i].subscribe(v => this.onLeafSelected.bind(this, v, i + 1)());
 		}
-
-		// Queries
-		this.refreshLeafs();
+		this.lookupStore().leafCache$.pipe(takeUntil(this.m_onDestroy)).subscribe(v => this.handleCacheChange(v));
 	}
 
-	refreshLeafs() {
-		//this.resetLeafs();
-		for(let i = InventoryConst.ivLeafs.firstLevel; i <= InventoryConst.ivLeafs.lastLevel; i++) {
-			if(this.globalStateStore.getApiErrorState().hasErrors) { return; }
-			this.lookupStore().api.listInventoryLookupPaths(this.getLeafListRequestByLevel(i))
-				.pipe(first()).subscribe(res => this.handleLeafQuery(res, i));
-		}
+	ngOnDestroy(): void {
+		this.m_onDestroy.next();
 	}
 
 	resetLeafs(resetAt:number) {
@@ -105,11 +100,12 @@ export class IvLookupQuestionGridComponent {
 
 	// Leaf Handlers
 
+	handleCacheChange(value:IvLookupCache) {
+		this.m_leafCache = value;
+		this.m_leafDict[InventoryConst.ivLeafs.firstLevel - 1].set(this.m_leafCache.getLeafByLevel(InventoryConst.ivLeafs.firstLevel));
+	}
+
 	handleLeafQuery(value:QueryData<IvLookupPath>, leafLevel:number) {
-		if(this.globalStateStore.getApiErrorState().hasErrors) { return; }
-		if(value.response.isFatal) {
-			this.globalStateStore.raiseApiFatalError();
-		}
 		this.m_leafCache.setLeafByLevel(value.records, leafLevel);
 		if(leafLevel === 1) {
 			this.m_leafDict[leafLevel - 1].set(this.m_leafCache.getLeafByLevel(leafLevel));
@@ -139,13 +135,5 @@ export class IvLookupQuestionGridComponent {
 		} else {
 			console.warn("No leaf level was provided to clear from.");
 		}
-	}
-
-	// Queries
-
-	getLeafListRequestByLevel(level:number) {
-		return new ApiQueryRequest()
-			.setUri(`inventory/lookupleaf`)
-			.setRequestData({"path_level": level});
 	}
 }

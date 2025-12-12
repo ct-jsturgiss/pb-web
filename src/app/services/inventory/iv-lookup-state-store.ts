@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, first, Observable, Subscription } from "rxjs";
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, first, Observable, Observer, Subscription, zip } from "rxjs";
 import { InventoryLookup } from "../../models/inventory/inventory-lookup";
 import { LookupMode } from "../../models/core/lookup-mode";
 import { InventoryApiService } from "./iv-api-service";
@@ -8,8 +8,9 @@ import { containsAsString } from "../core/helpers";
 import { IvLookupSelection } from "../../models/inventory/inventory-lookup-selection";
 import { SearchBarStateStore } from "../../components/core/controls/search-bar/services/search-bar-store";
 import { IvLookupState } from "../../models/inventory/inventory-lookup-state";
-import { EmptyLambda, EmptyLambdaType } from "../../models/core/common-types";
-import { AppDialogStateStore } from "../../components/core/dialogs/app-dialog/services/app-dialog-stateStore";
+import { IvLookupCache } from "../../models/inventory/inventory-lookup-cache";
+import { InventoryConst } from "../../../constants/ui-constants";
+import { IvLookupPath } from "../../models/inventory/inventory-lookup-path";
 
 @Injectable()
 export class IvLookupStateStore {
@@ -22,6 +23,7 @@ export class IvLookupStateStore {
     private m_lookupView = new BehaviorSubject<InventoryLookup[]>(this.m_state.lookupView);
     private m_selected = new BehaviorSubject<InventoryLookup|null>(this.m_state.selected);
     private m_mode = new BehaviorSubject<LookupMode>(this.m_state.mode);
+    private m_leafCache = new BehaviorSubject<IvLookupCache>(this.m_state.leafCache);
     private m_leafSelection = new BehaviorSubject<IvLookupSelection|null>(this.m_state.leafSelection);
 
     // Services
@@ -31,8 +33,8 @@ export class IvLookupStateStore {
     public lookupView$:Observable<InventoryLookup[]> = this.m_lookupView.asObservable();
     public selected$:Observable<InventoryLookup|null> = this.m_selected.asObservable();
     public mode$:Observable<LookupMode> = this.m_mode.asObservable();
+    public leafCache$:Observable<IvLookupCache> = this.m_leafCache.asObservable();
     public leafSelection$:Observable<IvLookupSelection|null> = this.m_leafSelection.asObservable();
-    //public searchPattern:Observable<string> = this.m_searchPattern.asObservable();
 
     public api:InventoryApiService;
 
@@ -49,6 +51,7 @@ export class IvLookupStateStore {
         this.lookupView$.subscribe(v => this.m_state.lookupView = v);
         this.selected$.subscribe(v => this.m_state.selected = v);
         this.mode$.subscribe(v => this.m_state.mode = v);
+        this.leafCache$.subscribe(v => this.m_state.leafCache = v);
         this.leafSelection$.subscribe(v => this.m_state.leafSelection = v);
 
         // Search Store
@@ -71,6 +74,10 @@ export class IvLookupStateStore {
 
     setMode(mode:LookupMode) {
         this.m_mode.next(mode);
+    }
+
+    setLeafCache(cache:IvLookupCache) {
+        this.m_leafCache.next(cache);
     }
 
     setLeafSelection(selection:IvLookupSelection|null) {
@@ -117,29 +124,35 @@ export class IvLookupStateStore {
     
 	//===> Queries
     
-    refreshLookups(after:EmptyLambdaType = EmptyLambda) {
+    refreshLookups(observer:Observer<QueryData<InventoryLookup>>) {
         this.api.listInventoryLookups(this.getLookupsRequest())
             .pipe(first())
-            .subscribe({
-                next: v => this.handleRefreshLookups(v),
-                error: err => this.handleRefreshLookupsError(err),
-                complete: after
-            });
+            .subscribe(observer);
     }
 
-    handleRefreshLookups(value:QueryData<InventoryLookup>) {
-        this.api.globalStateStore.resetApiError();
-        this.setStore(value.records);
-        this.filterItems();
-    }
-
-    handleRefreshLookupsError(err:ApiQueryResult) {
-        this.api.globalStateStore.raiseApiFatalError();
+    refreshLeafCache() {
+        const leafs:Observable<QueryData<IvLookupPath>>[] = [];
+        for(let i = InventoryConst.ivLeafs.firstLevel; i <= InventoryConst.ivLeafs.lastLevel; i++) {
+            leafs.push(this.api.listInventoryLookupPaths(this.getLeafListRequestByLevel(i)));
+        }
+        zip(leafs).pipe(first()).subscribe(leafRequest => {
+            const cache:IvLookupCache = new IvLookupCache();
+            for(let i = 0; i < leafRequest.length; i++) {
+                cache.setLeafByLevel(leafRequest[i].records, i + 1);
+            }
+            this.setLeafCache(cache);
+        });
     }
 
 	getLookupsRequest():ApiQueryRequest {
 		return new ApiQueryRequest()
 			.setUri(`inventory/items`);
+	}
+
+	getLeafListRequestByLevel(level:number) {
+		return new ApiQueryRequest()
+			.setUri(`inventory/lookupleaf`)
+			.setRequestData({"path_level": level});
 	}
 
     //<===

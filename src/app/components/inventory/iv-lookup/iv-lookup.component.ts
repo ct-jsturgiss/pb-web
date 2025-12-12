@@ -19,17 +19,26 @@ import { SearchBarStateStore } from '../../core/controls/search-bar/services/sea
 import { LookupMode } from '../../../models/core/lookup-mode';
 import { AppConst } from '../../../../constants/ui-constants';
 import { Subscription } from 'rxjs';
+import { ApiQueryResult, QueryData } from '../../../services/api-interfaces';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AppDialogService } from '../../core/dialogs/dialog-service';
+import { ApiConst } from '../../../../constants/api-constants';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
 	selector: 'pb-iv-lookup',
 	imports: [InputTextModule, TableModule, SkeletonModule, AsyncPipe,
 		FormsModule, ProgressSpinnerModule, IvLookupQuestionGridComponent, SearchBarComponent,
-		CardModule
+		CardModule, DialogModule
 	],
 	templateUrl: './iv-lookup.component.html',
 	styleUrl: './iv-lookup.component.scss',
+	providers: [AppDialogService]
 })
-export class IvLookupComponent implements OnInit, OnDestroy {
+export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
+
+	// Refs
+	private m_dialogRef:DynamicDialogRef|null = null;
 
 	// Subscriptions
 	private m_subs:Subscription = new Subscription();
@@ -39,6 +48,7 @@ export class IvLookupComponent implements OnInit, OnDestroy {
 
 	// Services
 	public store = input.required<IvLookupStateStore>();
+	public dialogService:AppDialogService;
 
 	// Props
 	public get searchStore():SearchBarStateStore { return this.store().searchStore; }
@@ -52,7 +62,8 @@ export class IvLookupComponent implements OnInit, OnDestroy {
 	// Signals
 	public selectedLookup = signal<InventoryLookup|null>(null);
 
-	constructor() {
+	constructor(dialogService:AppDialogService) {
+		this.dialogService = dialogService;
 	}
 
 	ngOnInit(): void {
@@ -63,15 +74,41 @@ export class IvLookupComponent implements OnInit, OnDestroy {
 
 		this.isLoading.set(true);
 		this.isQuerying.set(true);
-		this.store().refreshLookups(() => {
-			this.isQuerying.set(false);
-			this.isLoading.set(false);
-			console.log("Initial refresh done");
+	}
+
+	ngAfterContentInit(): void {
+		this.store().refreshLookups({
+			next: v => this.onLookupsRefresh(v),
+			error: v => this.onLookupsRefreshError(v),
+			complete: () => this.onLookupsRefreshComplete()
 		});
 	}
 
 	ngOnDestroy(): void {
 		this.m_subs.unsubscribe();
+	}
+
+	// Observable Handlers
+	onLookupsRefresh(data:QueryData<InventoryLookup>) {
+		this.store().setStore(data.records);
+		this.store().filterItems();
+	}
+
+	onLookupsRefreshError(error:ApiQueryResult) {
+		if(error.stateCode?.code === ApiConst.errorCodes.serverUnreachable.code) {
+			this.m_dialogRef = this.dialogService.showApiUnavailable();
+		} else {
+			console.error(error); // TODO: Other errors?
+		}
+		
+		this.isQuerying.set(false);
+		this.isLoading.set(false);
+	}
+
+	onLookupsRefreshComplete() {
+		this.isQuerying.set(false);
+		this.isLoading.set(false);
+		this.store().refreshLeafCache();
 	}
 
 	// Handlers
