@@ -1,10 +1,8 @@
-<div class="row">
-    <div class="col">
+<div class="row mb-2">
+    <div class="col-1">
         <p>{{ leafTitle() }}</p>
     </div>
-</div>
-<div class="row mb-2">
-    <div class="col-11">
+    <div class="col">
         <p-select class="w-100 ms-1" [editable] [options]="leafSource()" [(ngModel)]="selectedLeaf" [placeholder]="`${leafSource().length} items`" scrollHeight="300px">
         <ng-template #selectedItem let-leaf>
             <div class="d-flex align-items-center">
@@ -18,7 +16,7 @@
         </ng-template>
     </p-select>
     </div>
-    <div class="col">
+    <div class="col-1 pb btn-icon-col">
         @if (showClearButton()) {
             <p-button severity="primary" icon="pi pi-times" pTooltip="Clear" tooltipPosition="right" positionTop="-15" (onClick)="onClearButtonClicked()"/>
         }
