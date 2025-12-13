@@ -155,12 +155,13 @@ body {
 	max-width: 5rem;
 }
 
-.title-bar-icon {
-	max-width: 3.75em;
+.pb.title-bar-icon {
+	text-align: center;
 }
 
 .title-bar-icon > img {
-	max-width: 3.75em;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .title-bar-title {
@@ -169,7 +170,7 @@ body {
 }
 
 .title-bar-title > h2 {
-	padding-left: 0.5em;
+	padding-left: 0.25rem;
 }
 
 .main-menu-item-selected > button {
@@ -200,7 +201,7 @@ body {
 }
 
 /* Buttons */
-.pb .btn-icon-col {
+.pb.btn-icon-col {
 	max-width: 3.5rem;
 	min-width: 3.5rem;
 }
