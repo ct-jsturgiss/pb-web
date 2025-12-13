@@ -7,7 +7,7 @@ import { IvLookupCache } from '../../../models/inventory/inventory-lookup-cache'
 import { QueryData } from '../../../services/api-interfaces';
 import { InventoryConst } from '../../../../constants/ui-constants';
 import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
-import { IvLookupStateStore } from '../../../services/inventory/iv-lookup-state-store';
+import { IvLookupService } from '../../../services/inventory/iv-lookup-service';
 
 // TODO: Refactor question grid. Can we simply events/bindings even more? Move state to service?
 
@@ -28,7 +28,7 @@ export class IvLookupQuestionGridComponent implements OnInit, OnDestroy {
 	private m_resetting:boolean = false;
 	
 	// Store
-	public lookupStore = input.required<IvLookupStateStore>();
+	public lookupStore = input.required<IvLookupService>();
 
 	// Leaf Sources
 	public leaf1:ModelSignal<IvLookupPath[]> = model<IvLookupPath[]>([]);

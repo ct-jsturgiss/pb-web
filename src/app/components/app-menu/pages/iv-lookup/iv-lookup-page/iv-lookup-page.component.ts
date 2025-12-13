@@ -4,7 +4,7 @@ import { Component, model, signal, SimpleChanges } from '@angular/core';
 
 // pb
 import { IvLookupComponent } from "../../../../inventory/iv-lookup/iv-lookup.component";
-import { IvLookupStateStore } from '../../../../../services/inventory/iv-lookup-state-store';
+import { IvLookupService } from '../../../../../services/inventory/iv-lookup-service';
 import { SearchBarStateStore } from '../../../../core/controls/search-bar/services/search-bar-store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
@@ -14,13 +14,13 @@ import { DialogModule } from 'primeng/dialog';
   imports: [IvLookupComponent, DialogModule],
   templateUrl: './iv-lookup-page.component.html',
   styleUrl: './iv-lookup-page.component.scss',
-  providers: [IvLookupStateStore, SearchBarStateStore, DialogService]
+  providers: [IvLookupService, SearchBarStateStore, DialogService]
 })
 export class IvLookupPageComponent {
 
-    public service:IvLookupStateStore;
+    public service:IvLookupService;
 
-    constructor(service:IvLookupStateStore) {
+    constructor(service:IvLookupService) {
       this.service = service;
     }
 }

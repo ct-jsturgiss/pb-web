@@ -13,7 +13,7 @@ import { InventoryConst } from "../../../constants/ui-constants";
 import { IvLookupPath } from "../../models/inventory/inventory-lookup-path";
 
 @Injectable()
-export class IvLookupStateStore {
+export class IvLookupService {
 
     // Internal State
     private m_state:IvLookupState = IvLookupState.default();
