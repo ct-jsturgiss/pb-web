@@ -1,7 +1,19 @@
 import { ModelAdapter } from "../core/modelAdapter";
 
-export class InventoryLookup {
+export interface InventoryLookup {
+    id:number;
+    itemCode:string;
+    itemName:string;
+    pathId:string|null;
+    supplierItemCode:string|null;
+    manufacturerName:string|null;
+    manufacturerDescription:string|null;
+    listName:string|null;
+}
 
+export class InventoryLookup implements InventoryLookup {
+
+    public pathId:string|null;
     public supplierItemCode:string|null = null;
     public manufacturerName:string|null = null;
     public manufacturerDescription:string|null = null;
@@ -11,8 +23,10 @@ export class InventoryLookup {
         public id:number,
         public itemCode:string,
         public itemName:string,
-        public pathId:string
-    ){}
+        pathId:string
+    ) {
+        this.pathId = pathId;
+    }
 
 }
 
