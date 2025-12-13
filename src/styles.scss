@@ -198,3 +198,9 @@ body {
 .card-std {
 	@extend .light-border-solid, .table-bg-std;
 }
+
+/* Buttons */
+.pb .btn-icon-col {
+	max-width: 3.5rem;
+	min-width: 3.5rem;
+}
