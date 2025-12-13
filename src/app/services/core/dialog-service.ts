@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Type } from "@angular/core";
 
 // primeng
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog"
-import { AppDialogComponent } from "./app-dialog/app-dialog.component";
+import { AppDialogComponent } from "../../components/core/dialogs/app-dialog/app-dialog.component";
 
 @Injectable()
 export class AppDialogService {
@@ -12,6 +12,19 @@ export class AppDialogService {
 
     constructor(service:DialogService) {
         this.primeService = service;
+    }
+
+    showView<TComponent>(componentType:Type<TComponent>, header:string, data?:any):DynamicDialogRef|null {
+        return this.primeService.open(componentType, {
+            header: header,
+            dismissableMask: false,
+            closable: false,
+            width: '90vw',
+            modal: true,
+            inputValues: {
+                data: data,
+            }
+        });
     }
 
     showNotice(header:string, message:string):DynamicDialogRef|null {
