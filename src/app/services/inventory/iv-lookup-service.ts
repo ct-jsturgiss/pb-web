@@ -104,6 +104,9 @@ export class IvLookupService {
                     if(containsAsString(v.itemName, searchStr)) {
                         ret = true;
                     }
+                    if(containsAsString(v.supplierItemCode, searchStr)){
+                        ret = true;
+                    }
 
                     return ret;
                 });
