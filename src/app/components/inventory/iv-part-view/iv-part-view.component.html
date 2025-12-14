@@ -1,8 +1,29 @@
-<div class="row">
+<div class="row pt-4">
     <div class="col">
-        
+        <h3>{{ dialogData()?.lookupSeed.itemName }}</h3>
+    </div>
+    <div class="col-1 pb btn-col-cancel me-3">
+        <p-button label="Cancel" (onClick)="closeDialog()"/>
+    </div>
+    <div class="col-1 pb btn-col-save me-3">        
+        <p-button label="Save"/>
     </div>
 </div>
 <div class="row">
-    
+    <div class="col">
+        <p-tabs value="0">
+            <p-tablist>
+                <p-tab value="0">Item Info</p-tab>
+                <p-tab value="1">Item Map</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+                <p-tabpanel value="0">
+                    <h3>Item Information</h3>
+                </p-tabpanel>
+                <p-tabpanel value="1">
+                    <h3>Item Mapping</h3>
+                </p-tabpanel>
+            </p-tabpanels>
+        </p-tabs>
+    </div>
 </div>
