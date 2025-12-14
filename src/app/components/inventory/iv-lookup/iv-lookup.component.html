@@ -3,7 +3,7 @@
 		<pb-search-bar [store]="searchStore"/>
 	</div>
 	<div class="col-1 ps-0" style="max-width: 5rem;">
-		<p-button label="View" (onClick)="onViewLookupClicked()"/>
+		<p-button label="View" (onClick)="onViewLookupClicked()" [disabled]="selectedLookup() === null"/>
 	</div>
 	<div class="col-6"></div>
 </div>
