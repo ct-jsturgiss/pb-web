@@ -24,4 +24,10 @@ export class IvRecord implements InventoryRecord {
         public itemName:string) {
     }
 
+    public static FromLookup(lookup:InventoryLookup):IvRecord {
+        const rec = new IvRecord(lookup.id, lookup.itemCode, lookup.itemName);
+        Object.assign(rec, lookup);
+        
+        return rec;
+    }
 }
