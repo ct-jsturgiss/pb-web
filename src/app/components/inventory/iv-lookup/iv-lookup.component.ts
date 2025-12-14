@@ -21,10 +21,11 @@ import { AppConst } from '../../../../constants/ui-constants';
 import { Subscription } from 'rxjs';
 import { ApiQueryResult, QueryData } from '../../../services/api-interfaces';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AppDialogService } from '../../core/dialogs/dialog-service';
 import { ApiConst } from '../../../../constants/api-constants';
 import { DialogModule } from 'primeng/dialog';
 import { Button } from "primeng/button";
+import { AppDialogService } from '../../../services/core/dialog-service';
+import { IvPartViewComponent } from '../iv-part-view/iv-part-view.component';
 
 @Component({
 	selector: 'pb-iv-lookup',
@@ -38,7 +39,8 @@ import { Button } from "primeng/button";
 export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 
 	// Refs
-	private m_dialogRef:DynamicDialogRef|null = null;
+	private m_appDialogRef:DynamicDialogRef|null = null;
+	private m_partViewDialogRef:DynamicDialogRef|null = null;
 
 	// Subscriptions
 	private m_subs:Subscription = new Subscription();
@@ -97,7 +99,7 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 	onLookupsRefreshError(error:ApiQueryResult) {
 		this.selectedLookup.set(null);
 		if(error.stateCode?.code === ApiConst.errorCodes.serverUnreachable.code) {
-			this.m_dialogRef = this.dialogService.showApiUnavailable();
+			this.m_appDialogRef = this.dialogService.showApiUnavailable();
 		} else {
 			console.error(error); // TODO: Other errors?
 		}
@@ -116,7 +118,12 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 	// Handlers
 
 	onViewLookupClicked() {
-		this.dialogService.showNotice("View Lookup", "I don't do anything right now.. but I will :)");
+		const selected = this.selectedLookup();
+		if(selected) {
+			this.m_partViewDialogRef = this.dialogService.showView(IvPartViewComponent, "Part Viewer", {
+				lookupSeed: selected
+			});
+		}
 	}
 
 	onSearchPatternChanged(value:string) {
