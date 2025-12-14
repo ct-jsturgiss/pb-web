@@ -14,15 +14,17 @@ export class AppDialogService {
         this.primeService = service;
     }
 
-    showView<TComponent>(componentType:Type<TComponent>, header:string, data?:any):DynamicDialogRef|null {
+    showView<TComponent>(componentType:Type<TComponent>, header:string, injectionData?:any):DynamicDialogRef|null {
         return this.primeService.open(componentType, {
             header: header,
             dismissableMask: false,
             closable: false,
             width: '90vw',
+            height: '90vh',
             modal: true,
+            showHeader: false,
             inputValues: {
-                data: data,
+                dialogData: injectionData,
             }
         });
     }
