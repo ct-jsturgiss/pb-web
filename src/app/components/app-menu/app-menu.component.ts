@@ -1,9 +1,9 @@
 
-import { Component, input } from '@angular/core';
-import { MenuItem, MessageService, PrimeIcons } from 'primeng/api';
+import { Component } from '@angular/core';
+import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { NavigationEnd, provideRouter, Router, RouteReuseStrategy, RouterLink, RouterModule, withComponentInputBinding } from "@angular/router";
+import { NavigationEnd, Router, RouterLink, RouterModule } from "@angular/router";
 
 import MainMenuItemState from '../../models/core/main-menu-item-state';
 import { MainMenuConstants } from '../../../constants/ui-constants';
