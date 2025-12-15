@@ -5,6 +5,9 @@ export interface InventoryRecord extends InventoryLookup {
     itemCode:string;
     itemName:string;
     pathId:string|null;
+    ctListPrice:number|null;
+    ctListDesc:string|null;
+    //
     supplierItemCode:string|null;
     manufacturerName:string|null;
     manufacturerDescription:string|null;
@@ -14,6 +17,9 @@ export interface InventoryRecord extends InventoryLookup {
 export class IvRecord implements InventoryRecord {
 
     public pathId:string|null = null;
+    public ctListPrice:number|null = null;
+    public ctListDesc:string|null = null;
+    //
     public supplierItemCode:string|null = null;
     public manufacturerName:string|null = null;
     public manufacturerDescription:string|null = null;
