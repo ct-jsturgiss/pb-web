@@ -3,6 +3,14 @@ import MainMenuItemState from "../app/models/core/main-menu-item-state";
 
 /* Main Menu */
 
+export interface MainMenuKey {
+	id:string;
+	label:string;
+	icon:keyof PrimeIcons;
+	tooltip:string;
+	routerLink?:string;
+}
+
 export class MainMenuKeys {
 
 	static readonly Home = {
@@ -11,7 +19,7 @@ export class MainMenuKeys {
 		icon: PrimeIcons.HOME,
 		tooltip: "Home",
 		routerLink: ""
-	} as const;
+	} as const as MainMenuKey;
 
 	static readonly InventoryLookup = {
 		id: "iv-lookup",
@@ -19,14 +27,21 @@ export class MainMenuKeys {
 		icon: PrimeIcons.BARCODE,
 		tooltip: "Inventory Lookup",
 		routerLink: "iv-lookup"
-	} as const;
+	} as const as MainMenuKey;
 
 	static readonly BomManagement = {
 		id: "bom-manage",
 		label: "BOM Management",
 		icon: PrimeIcons.SITEMAP,
 		tooltip: "BOM Management",
-	} as const;
+	} as const as MainMenuKey;
+
+	static readonly ConfigurationMenu = {
+		id: "config-manage",
+		label: "Configuration",
+		icon: PrimeIcons.COG,
+		tooltip: "Configuration",
+	} as const as MainMenuKey;
 }
 
 export class MainMenuConstants {
@@ -46,6 +61,10 @@ export class MainMenuConstants {
 		},
 		{
 			...MainMenuKeys.BomManagement,
+			state: {...this.DefaultMainMenuItemState},
+		},
+		{
+			...MainMenuKeys.ConfigurationMenu,
 			state: {...this.DefaultMainMenuItemState},
 		}
 	] as const;
