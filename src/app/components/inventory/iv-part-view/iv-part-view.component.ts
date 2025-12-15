@@ -6,10 +6,16 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Button } from "primeng/button";
 import { TabsModule } from "primeng/tabs"
 import { InventoryLookup } from '../../../models/inventory/inventory-lookup';
+import { IftaLabelModule } from "primeng/iftalabel"
+import { InputText } from "primeng/inputtext";
+import { CheckboxModule } from "primeng/checkbox"
+import { InputNumberModule } from "primeng/inputnumber"
+import { Select } from "primeng/select";
 
 @Component({
   selector: 'pb-iv-part-view',
-  imports: [Button, TabsModule],
+  imports: [Button, TabsModule, IftaLabelModule, InputText, CheckboxModule,
+    InputNumberModule, Select],
   templateUrl: './iv-part-view.component.html',
   styleUrl: './iv-part-view.component.scss',
 })

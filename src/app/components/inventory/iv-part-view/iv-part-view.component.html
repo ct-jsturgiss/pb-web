@@ -18,7 +18,62 @@
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
-                    <h3>Item Information</h3>
+                    <div class="d-flex flex-column">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row mb-1">
+                                    <div class="col-2">
+                                        <label class="d-block">Item Code</label>
+                                        <span class="ms-2">{{ dialogData()?.lookupSeed.itemCode }}</span>
+                                    </div>
+                                    <div class="col-2">
+                                        <label for="item_active" class="me-1">Is Active</label>
+                                        <p-checkbox size="large" inputId="item_active"/>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <p-iftalabel>
+                                            <input pInputText id="itemname" class="w-100" [value]="dialogData()?.lookupSeed.itemName"/>
+                                            <label for="itemname" class="ps-2">Item Name</label>
+                                        </p-iftalabel>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <p-iftalabel>
+                                            <p-inputnumber inputId="ctlistprice" mode="currency" currency="USD" [maxFractionDigits]="2" [min]="0"/>
+                                            <label for="ctlistprice" class="ps-2">Caretaker List Price</label>
+                                        </p-iftalabel>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <p-iftalabel>
+                                            <input pInputText id="ctlistdesc" class="w-100"/>
+                                            <label for="ctlistdesc" class="ps-2">Caretaker List Description</label>
+                                        </p-iftalabel>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <p-iftalabel>
+                                            <p-select name="stockuom" class="w-100"/>
+                                            <label for="stockuom" class="ps-2">Stocking UOM</label>
+                                        </p-iftalabel>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <p-iftalabel>
+                                            <input pInputText id="pouom" class="w-100"/>
+                                            <label for="pouom" class="ps-2">Purchase UOM</label>
+                                        </p-iftalabel>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </p-tabpanel>
                 <p-tabpanel value="1">
                     <h3>Item Mapping</h3>
