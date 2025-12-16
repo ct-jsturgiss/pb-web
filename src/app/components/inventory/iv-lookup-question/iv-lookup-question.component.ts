@@ -2,7 +2,7 @@ import { Component, input, InputSignal, model, ModelSignal, output, OutputEmitte
 
 // primeng
 import { SelectModule } from "primeng/select"
-import { IvLookupPath } from '../../../models/inventory/inventory-lookup-path';
+import { IvLookupPath } from '../../../models/inventory/lookups/inventory-lookup-path';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 

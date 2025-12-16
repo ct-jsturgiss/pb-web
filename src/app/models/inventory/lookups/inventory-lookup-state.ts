@@ -1,4 +1,4 @@
-import { LookupMode } from "../core/lookup-mode";
+import { LookupMode } from "../../core/lookup-mode";
 import { InventoryLookup } from "./inventory-lookup";
 import { IvLookupCache } from "./inventory-lookup-cache";
 import { IvLookupSelection } from "./inventory-lookup-selection";

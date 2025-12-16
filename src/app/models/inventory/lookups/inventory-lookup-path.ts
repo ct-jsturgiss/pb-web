@@ -1,5 +1,5 @@
-import { RegexConst } from "../../../constants/regex-constants";
-import { ModelAdapter } from "../core/modelAdapter";
+import { RegexConst } from "../../../../constants/regex-constants";
+import { ModelAdapter } from "../../core/modelAdapter";
 
 const localConst = {
     pathDelimiter: "/",

@@ -1,12 +1,12 @@
 import { Component, input, model, ModelSignal, OnDestroy, OnInit, output, OutputEmitterRef } from '@angular/core';
 
 import { IvLookupQuestionComponent } from '../iv-lookup-question/iv-lookup-question.component';
-import { IvLookupPath } from '../../../models/inventory/inventory-lookup-path';
+import { IvLookupPath } from '../../../models/inventory/lookups/inventory-lookup-path';
 import { Subject, takeUntil } from 'rxjs';
-import { IvLookupCache } from '../../../models/inventory/inventory-lookup-cache';
+import { IvLookupCache } from '../../../models/inventory/lookups/inventory-lookup-cache';
 import { QueryData } from '../../../services/api-interfaces';
 import { InventoryConst } from '../../../../constants/ui-constants';
-import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
+import { IvLookupSelection } from '../../../models/inventory/lookups/inventory-lookup-selection';
 import { IvLookupService } from '../../../services/inventory/iv-lookup-service';
 
 // TODO: Refactor question grid. Can we simply events/bindings even more? Move state to service?

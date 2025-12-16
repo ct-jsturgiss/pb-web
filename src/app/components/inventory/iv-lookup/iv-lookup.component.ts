@@ -8,10 +8,10 @@ import { ProgressSpinnerModule } from "primeng/progressspinner"
 import { CardModule } from "primeng/card"
 
 // pb
-import { InventoryLookup } from '../../../models/inventory/inventory-lookup';
+import { InventoryLookup } from '../../../models/inventory/lookups/inventory-lookup';
 import { FormsModule } from '@angular/forms';
 import { IvLookupQuestionGridComponent } from '../iv-lookup-question-grid/iv-lookup-question-grid.component';
-import { IvLookupSelection } from '../../../models/inventory/inventory-lookup-selection';
+import { IvLookupSelection } from '../../../models/inventory/lookups/inventory-lookup-selection';
 import { IvLookupService } from '../../../services/inventory/iv-lookup-service';
 import { AsyncPipe } from '@angular/common';
 import { SearchBarComponent } from '../../core/controls/search-bar/search-bar.component';

@@ -1,4 +1,4 @@
-import { InventoryLookup } from "./inventory-lookup";
+import { InventoryLookup } from "./lookups/inventory-lookup";
 
 export interface InventoryRecord extends InventoryLookup {
     id:number;

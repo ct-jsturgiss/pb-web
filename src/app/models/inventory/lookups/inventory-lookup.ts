@@ -1,4 +1,4 @@
-import { ModelAdapter } from "../core/modelAdapter";
+import { ModelAdapter } from "../../core/modelAdapter";
 
 export interface InventoryLookup {
     id:number;

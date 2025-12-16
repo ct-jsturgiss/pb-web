@@ -1,16 +1,16 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, first, Observable, Observer, Subscription, zip } from "rxjs";
-import { InventoryLookup } from "../../models/inventory/inventory-lookup";
+import { InventoryLookup } from "../../models/inventory/lookups/inventory-lookup";
 import { LookupMode } from "../../models/core/lookup-mode";
 import { InventoryApiService } from "./iv-api-service";
 import { ApiQueryRequest, ApiQueryResult, QueryData } from "../api-interfaces";
 import { containsAsString } from "../core/helpers";
-import { IvLookupSelection } from "../../models/inventory/inventory-lookup-selection";
+import { IvLookupSelection } from "../../models/inventory/lookups/inventory-lookup-selection";
 import { SearchBarStateStore } from "../../components/core/controls/search-bar/services/search-bar-store";
-import { IvLookupState } from "../../models/inventory/inventory-lookup-state";
-import { IvLookupCache } from "../../models/inventory/inventory-lookup-cache";
+import { IvLookupState } from "../../models/inventory/lookups/inventory-lookup-state";
+import { IvLookupCache } from "../../models/inventory/lookups/inventory-lookup-cache";
 import { InventoryConst } from "../../../constants/ui-constants";
-import { IvLookupPath } from "../../models/inventory/inventory-lookup-path";
+import { IvLookupPath } from "../../models/inventory/lookups/inventory-lookup-path";
 
 @Injectable()
 export class IvLookupService {

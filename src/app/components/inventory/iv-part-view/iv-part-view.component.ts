@@ -5,7 +5,6 @@ import { IvRecord } from '../../../models/inventory/inventory-record';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Button } from "primeng/button";
 import { TabsModule } from "primeng/tabs"
-import { InventoryLookup } from '../../../models/inventory/inventory-lookup';
 import { IftaLabelModule } from "primeng/iftalabel"
 import { InputText } from "primeng/inputtext";
 import { CheckboxModule } from "primeng/checkbox"
