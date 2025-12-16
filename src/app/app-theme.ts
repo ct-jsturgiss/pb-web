@@ -54,6 +54,24 @@ const appPreset:Preset = {
                     },
                 }
             }
+        },
+        panelmenu: {
+            colorScheme: {
+                light: {
+                    panel: {
+                        borderColor: '{stone.400}'
+                    }
+                }
+            }
+        },
+        toolbar: {
+            colorScheme: {
+                light: {
+                    root: {
+                        borderColor: '{stone.400}'
+                    }
+                }
+            }
         }
     }
 };
