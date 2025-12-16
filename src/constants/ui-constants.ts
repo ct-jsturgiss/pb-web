@@ -41,6 +41,7 @@ export class MainMenuKeys {
 		label: "Configuration",
 		icon: PrimeIcons.COG,
 		tooltip: "Configuration",
+		routerLink: "config-manage"
 	} as const as MainMenuKey;
 }
 
@@ -69,6 +70,30 @@ export class MainMenuConstants {
 		}
 	] as const;
 }
+
+/* Config Manage Menu */
+
+export const ConfigManageMenu = {
+	inventory: {
+		ivunits: "iv-units"
+	}
+} as const;
+
+export const ConfigManageMenuItems = [
+	{
+		id: "inventory",
+		label: "Inventory",
+		icon: PrimeIcons.WAREHOUSE,
+		items: [
+			{
+				id: ConfigManageMenu.inventory.ivunits,
+				label: "Units Of Measure",
+			}
+		]
+	}
+] as const as MenuItem[];
+
+/* Constants */
 
 export const AppConst = {
 	placeholders: {
