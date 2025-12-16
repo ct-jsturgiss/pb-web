@@ -3,6 +3,7 @@ import { MainContentComponent } from './components/app-menu/pages/main-content/m
 import { NotFoundComponent } from './components/status/not-found/not-found.component';
 import { MainMenuKeys } from '../constants/ui-constants';
 import { IvLookupPageComponent } from './components/app-menu/pages/iv-lookup/iv-lookup-page/iv-lookup-page.component';
+import { ConfigManageComponent } from './components/app-menu/pages/config-manage/config-manage.component';
 
 export const routes: Routes = [
 	{
@@ -12,6 +13,10 @@ export const routes: Routes = [
 	{
 		path: MainMenuKeys.InventoryLookup.routerLink,
 		component: IvLookupPageComponent
+	},
+	{
+		path: MainMenuKeys.ConfigurationMenu.routerLink,
+		component: ConfigManageComponent
 	},
 	{
 		path: "**",
