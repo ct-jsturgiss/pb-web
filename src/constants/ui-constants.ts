@@ -88,6 +88,7 @@ export const ConfigManageMenuItems = [
 			{
 				id: ConfigManageMenu.inventory.ivunits,
 				label: "Units Of Measure",
+				icon: "fa fa-solid fa-ruler"
 			}
 		]
 	}
