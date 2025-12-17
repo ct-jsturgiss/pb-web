@@ -206,6 +206,16 @@ body {
 	@extend .light-border-solid, .table-bg-std;
 }
 
+.pb.card-table {
+	@extend .card-std;
+
+	min-height: 10rem;
+	margin-top: 0.5rem; // $spacer * 0.5;
+	margin-bottom: 0.5rem; // $spacer * 0.5;
+	height: 100%;
+	position: relative;
+}
+
 /* Buttons */
 .pb.btn-icon-col {
 	max-width: 3.5rem;
