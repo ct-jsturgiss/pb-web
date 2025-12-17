@@ -4,7 +4,6 @@ import { Component, input, OnInit, signal } from '@angular/core';
 import { ToolbarModule } from "primeng/toolbar"
 import { Button } from "primeng/button";
 import { TableModule } from "primeng/table"
-import { Card } from "primeng/card";
 import { IvUnitsService } from '../../../../../../services/inventory/iv-units-service';
 import { AsyncPipe } from '@angular/common';
 import { ApiQueryResult, QueryData } from '../../../../../../services/api-interfaces';
