@@ -96,6 +96,12 @@ body {
 	background-color: white;
 }
 
+.pb.table-fill-card {
+	min-height: 0;
+	padding-bottom: 1rem; // $spacer
+	margin: 0.5rem; // $spacer * 0.5;
+}
+
 /* Sizing */
 
 .w-max-7rem {

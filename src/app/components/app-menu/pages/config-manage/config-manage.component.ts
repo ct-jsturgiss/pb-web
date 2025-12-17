@@ -1,24 +1,35 @@
 import { Component, OnInit, signal, Type } from '@angular/core';
 import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
+import { IvUnitsViewComponent } from './views/iv-units-view/iv-units-view.component';
 
 // primeng
 import { PanelMenuModule } from "primeng/panelmenu"
 import { ConfigManageMenu, ConfigManageMenuItems } from '../../../../../constants/ui-constants';
-import { NgComponentOutlet } from '@angular/common';
-import { IvUnitsViewComponent } from './views/iv-units-view/iv-units-view.component';
+import { IvUnitsService } from '../../../../services/inventory/iv-units-service';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'pb-config-manage',
-  imports: [PanelMenuModule, NgComponentOutlet],
+  imports: [PanelMenuModule, IvUnitsViewComponent],
   templateUrl: './config-manage.component.html',
   styleUrl: './config-manage.component.scss',
+  providers: [IvUnitsService, DialogService]
 })
 export class ConfigManageComponent implements OnInit {
 
   public menuItems:MenuItem[] = [];
 
+  // Const
+  public menu = ConfigManageMenu;
+
   // Signals
   public selectedMenuItem = signal<MenuItem|null>(null);
+
+  constructor(
+    public ivUnitsService:IvUnitsService
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.menuItems = this.buildMenuItems();
@@ -36,20 +47,6 @@ export class ConfigManageComponent implements OnInit {
     };
     
     return ConfigManageMenuItems.map(m => assignCmd(m));
-  }
-
-  getContent():Type<Component> {
-    const item = this.selectedMenuItem();
-    if(item) {
-      switch(item?.id) {
-        case ConfigManageMenu.inventory.ivunits:
-          return IvUnitsViewComponent;
-        default:
-          return null!;
-      }
-    } else {
-      return null!;
-    }
   }
 
   // Handlers
