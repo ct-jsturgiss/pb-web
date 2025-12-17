@@ -33,7 +33,9 @@
             ],
             "styles": [
               "src/styles.scss",
-              "public/css/bootstrap.min.css"
+              "public/assets/css/bs5/bootstrap.min.css",
+              "public/assets/css/fontawesome/all.min.css",
+              "public/assets/css/fontawesome/solid.min.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
