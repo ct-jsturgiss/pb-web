@@ -1,11 +1,11 @@
 import { Component, OnInit, signal, Type } from '@angular/core';
 import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
-import { IvUnitsViewComponent } from './views/iv-units-view/iv-units-view.component';
+import { IvUnitsViewComponent } from '../../views/iv-units-view/iv-units-view.component';
 
 // primeng
 import { PanelMenuModule } from "primeng/panelmenu"
-import { ConfigManageMenu, ConfigManageMenuItems } from '../../../../../constants/ui-constants';
-import { IvUnitsService } from '../../../../services/inventory/iv-units-service';
+import { ConfigManageMenu, ConfigManageMenuItems } from '../../../../constants/ui-constants';
+import { IvUnitsService } from '../../../services/inventory/iv-units-service';
 import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from "primeng/button"
 import { MainInterfaceComponent } from "./components/core/main-interface/main-interface.component";
-import { MainContentComponent } from "./components/app-menu/pages/main-content/main-content.component";
+import { MainContentComponent } from "./components/pages/main-content/main-content.component";
 import { MessageService } from 'primeng/api';
 import { ToastModule } from "primeng/toast";
 import { AppDialogComponent } from './components/core/dialogs/app-dialog/app-dialog.component';

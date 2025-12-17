@@ -4,14 +4,14 @@ import { Component, input, OnInit, signal } from '@angular/core';
 import { ToolbarModule } from "primeng/toolbar"
 import { Button } from "primeng/button";
 import { TableModule } from "primeng/table"
-import { IvUnitsService } from '../../../../../../services/inventory/iv-units-service';
+import { IvUnitsService } from '../../../services/inventory/iv-units-service';
 import { AsyncPipe } from '@angular/common';
-import { ApiQueryResult, QueryData } from '../../../../../../services/api-interfaces';
-import { InventoryUnit } from '../../../../../../models/inventory/inventory-unit';
+import { ApiQueryResult, QueryData } from '../../../services/api-interfaces';
+import { InventoryUnit } from '../../../models/inventory/inventory-unit';
 import { ProgressSpinner } from "primeng/progressspinner";
-import { ApiConst } from '../../../../../../../constants/api-constants';
+import { ApiConst } from '../../../../constants/api-constants';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AppDialogService } from '../../../../../../services/core/dialog-service';
+import { AppDialogService } from '../../../services/core/dialog-service';
 
 @Component({
   selector: 'pb-iv-units-view',

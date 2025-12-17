@@ -3,9 +3,9 @@ import { Component, model, signal, SimpleChanges } from '@angular/core';
 // primeng
 
 // pb
-import { IvLookupComponent } from "../../../../inventory/iv-lookup/iv-lookup.component";
-import { IvLookupService } from '../../../../../services/inventory/iv-lookup-service';
-import { SearchBarStateStore } from '../../../../core/controls/search-bar/services/search-bar-store';
+import { IvLookupComponent } from "../../../inventory/iv-lookup/iv-lookup.component";
+import { IvLookupService } from '../../../../services/inventory/iv-lookup-service';
+import { SearchBarStateStore } from '../../../core/controls/search-bar/services/search-bar-store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 
