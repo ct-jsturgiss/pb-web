@@ -4,24 +4,30 @@ import { RecordWithId } from "../record-with-id";
 
 export interface InventoryUnit extends RecordWithId {
     unit:string;
+    unitName:string;
+    pluralName:string|null;
 }
 
 export class InventoryUnit extends RecordWithId implements InventoryUnit {
 
-    constructor(id:number|null, unit:string) {
+    constructor(id:number|null, unit:string, name:string) {
         super(id);
         this.unit = unit;
+        this.unitName = name;
     }
 
-    static asNew(unit:string) {
-        return new InventoryUnit(DbConst.DefaultId, unit);
+    static asNew(unit:string, name:string) {
+        return new InventoryUnit(DbConst.DefaultId, unit, name);
     }
 }
 
 export const InventoryUnitAdapter:ModelAdapter<InventoryUnit> = {
 
     adapt(item:any): InventoryUnit {
-        return new InventoryUnit(item["id"], item["unit"]);
+        const unit = new InventoryUnit(item["id"], item["unit"], item["name"]);
+        unit.pluralName = item["plural_name"] ?? null;
+
+        return unit;
     }
 
 }
