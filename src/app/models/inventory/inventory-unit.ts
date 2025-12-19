@@ -1,4 +1,5 @@
 import { DbConst } from "../../../constants/db-constants";
+import { asStringEmptyOrNull } from "../../services/core/helpers";
 import { RecordChangeKind } from "../core/common-types";
 import { ModelAdapter } from "../core/modelAdapter";
 import { RecordWithId } from "../record-with-id";
@@ -24,6 +25,14 @@ export class InventoryUnit extends RecordWithId implements InventoryUnit {
 
     static asNew(unit:string, name:string) {
         return new InventoryUnit(DbConst.DefaultId, unit, name);
+    }
+
+    static isValid(unit:InventoryUnit):boolean {
+        let valid = true;
+        if(asStringEmptyOrNull(unit.unit)) { valid = false; }
+        if(asStringEmptyOrNull(unit.unitName)) { valid = false; }
+
+        return valid;
     }
 }
 
