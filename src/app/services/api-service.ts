@@ -65,7 +65,11 @@ export class PbApi implements IPbApi {
                         }
                     }
 
-                    return throwError(() => this.unknownRequestError());
+                    if(errorResponse.error["is_error"]) {
+                        return throwError(() => new ApiRequestResult(errorResponse.error));
+                    } else {
+                        return throwError(() => this.unknownRequestError());
+                    }
                 })
             );
         } catch(err) {
@@ -107,7 +111,11 @@ export class PbApi implements IPbApi {
                         }
                     }
 
-                    return throwError(() => this.unknownRequestError());
+                    if(errorResponse.error["is_error"]) {
+                        return throwError(() => new ApiRequestResult(errorResponse.error));
+                    } else {
+                        return throwError(() => this.unknownRequestError());
+                    }
                 })
             );
         } catch(err) {
