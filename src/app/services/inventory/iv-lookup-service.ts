@@ -3,7 +3,7 @@ import { BehaviorSubject, first, Observable, Observer, Subscription, zip } from 
 import { InventoryLookup } from "../../models/inventory/lookups/inventory-lookup";
 import { LookupMode } from "../../models/core/lookup-mode";
 import { InventoryApiService } from "./iv-api-service";
-import { ApiQueryRequest, ApiQueryResult, QueryData } from "../api-interfaces";
+import { ApiQueryRequest, QueryData } from "../api-interfaces";
 import { containsAsString } from "../core/helpers";
 import { IvLookupSelection } from "../../models/inventory/lookups/inventory-lookup-selection";
 import { SearchBarStateStore } from "../../components/core/controls/search-bar/services/search-bar-store";

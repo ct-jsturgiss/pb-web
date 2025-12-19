@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { ApiChangeMethod, ApiRecordChangeRequest, ApiQueryRequest, ApiQueryResult } from "./api-interfaces";
+import { ApiChangeMethod, ApiRecordChangeRequest, ApiQueryRequest, ApiRequestResult } from "./api-interfaces";
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment.development";
 import { catchError, first, Observable, of, pipe, retry, throwError } from "rxjs";
@@ -8,7 +8,7 @@ import { asStringEqual } from "./core/helpers";
 import { GlobalStateStore } from "./core/global-state-store";
 
 export interface IPbApi {
-    postQuery:(query:ApiQueryRequest) => Observable<ApiQueryResult>;
+    postQuery:(query:ApiQueryRequest) => Observable<ApiRequestResult>;
 }
 
 @Injectable({ providedIn: "root"})
@@ -27,28 +27,28 @@ export class PbApi implements IPbApi {
         this.m_http = http;
     }
 
-    unknownRequestError():ApiQueryResult {
+    unknownRequestError():ApiRequestResult {
         return {
             isError: true,
             isSuccess: false,
             isFatal: true,
             stateCode: ApiConst.errorCodes.unknownError,
-        } as ApiQueryResult;
+        } as ApiRequestResult;
     }
 
-    failedUnreachable():ApiQueryResult {
+    failedUnreachable():ApiRequestResult {
         return {
             isError: true,
             isSuccess: false,
             isFatal: true,
             stateCode: ApiConst.errorCodes.serverUnreachable,
-        } as ApiQueryResult;
+        } as ApiRequestResult;
     }
 
-    postQuery(query:ApiQueryRequest):Observable<ApiQueryResult> {
+    postQuery(query:ApiQueryRequest):Observable<ApiRequestResult> {
         try {
             const fullUri:string = environment.apiEndpoint + query.uri;
-            return this.m_http.post<ApiQueryResult>(fullUri, query.toJsonBody(), {
+            return this.m_http.post<ApiRequestResult>(fullUri, query.toJsonBody(), {
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -96,7 +96,7 @@ export class PbApi implements IPbApi {
                     break;
             }
 
-            return httpfunc<ApiQueryResult>(fullUri, request.toJsonBody(), headers).pipe(
+            return httpfunc<ApiRequestResult>(fullUri, request.toJsonBody(), headers).pipe(
                 retry(1),
                 // Try to capture network failures, otherwise pass on.
                 catchError((errorResponse:HttpErrorResponse, obs) => {

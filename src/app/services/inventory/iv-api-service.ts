@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { PbApi } from "../api-service";
 import { map, Observable } from "rxjs";
-import { ApiQueryRequest, ApiQueryResult, QueryData } from "../api-interfaces";
+import { ApiQueryRequest, ApiRequestResult, QueryData } from "../api-interfaces";
 import { InventoryLookup, InventoryLookupAdapter } from "../../models/inventory/lookups/inventory-lookup";
 import { HttpClient } from "@angular/common/http";
 import { IvLookupPath, IvLookupPathAdapter } from "../../models/inventory/lookups/inventory-lookup-path";
@@ -19,7 +19,7 @@ export class InventoryApiService extends PbApi {
     listInventoryUnits(query:ApiQueryRequest): Observable<QueryData<InventoryUnit>> {
         return this.postQuery(query)
             .pipe<QueryData<InventoryUnit>>(
-                map((result:ApiQueryResult) => {
+                map((result:ApiRequestResult) => {
                     if(result.isFatal) {
                         return {
                             response: result,
@@ -38,7 +38,7 @@ export class InventoryApiService extends PbApi {
     listInventoryLookups(query:ApiQueryRequest): Observable<QueryData<InventoryLookup>> {
         return this.postQuery(query)
             .pipe<QueryData<InventoryLookup>>(
-                map((result:ApiQueryResult) => {
+                map((result:ApiRequestResult) => {
                     if(result.isFatal) {
                         return {
                             response: result,
@@ -57,7 +57,7 @@ export class InventoryApiService extends PbApi {
     listInventoryLookupPaths(query:ApiQueryRequest): Observable<QueryData<IvLookupPath>> {
         return this.postQuery(query)
             .pipe<QueryData<IvLookupPath>>(
-                map((result:ApiQueryResult) => {
+                map((result:ApiRequestResult) => {
                     if(result.isFatal) {    
                         return {
                             response: result,

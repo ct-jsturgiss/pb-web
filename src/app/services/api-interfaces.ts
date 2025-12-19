@@ -1,6 +1,6 @@
 import { ApiRequestError } from "../../constants/api-constants";
 
-export type ApiResultHandler = (response:ApiQueryResult) => void;
+export type ApiResultHandler = (response:ApiRequestResult) => void;
 
 export interface ApiErrorState {
     hasErrors:boolean;
@@ -21,7 +21,7 @@ export class ApiErrorState implements ApiErrorState {
 }
 
 export interface QueryData<T> {
-    response:ApiQueryResult;
+    response:ApiRequestResult;
     records:T[];
 }
 
@@ -32,17 +32,17 @@ export interface ApiQueryRecords {
     records:any[];
 }
 
-export interface ApiQueryResult {
+export interface ApiRequestResult {
     isSuccess:boolean;
     isError:boolean;
     isFatal?:boolean;
     message?:string[];
-    errors?:string[];
+    errors?:string[]; // TODO: Change to errors object interface.
     data?:ApiQueryRecords;
     stateCode?:ApiRequestError
 }
 
-export class ApiQueryResult implements ApiQueryResult {
+export class ApiRequestResult implements ApiRequestResult {
 
     constructor(json:any) {
         if(!json || typeof json !== "object") {
