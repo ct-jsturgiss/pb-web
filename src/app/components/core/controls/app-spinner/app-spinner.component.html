@@ -1,0 +1,6 @@
+@if (isVisible()) {
+    <p-block-ui [blocked]="true"/>
+    <div class="container position-absolute" style="left: calc(50% - 25px); top: calc(50% - 25px);">
+        <p-progress-spinner strokeWidth="6" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+    </div>
+}
