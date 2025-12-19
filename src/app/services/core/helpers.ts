@@ -9,3 +9,7 @@ export const containsAsString = (x: any, y: any):boolean => {
 export const asStringEqual = (x:any, y:any):boolean => {
     return String(x).toLocaleLowerCase().trim() === String(y).toLocaleLowerCase().trim();
 }
+
+export const asStringEmptyOrNull = (x:any):boolean => {
+    return String(x ?? "").toLocaleLowerCase().trim() === "";
+}
