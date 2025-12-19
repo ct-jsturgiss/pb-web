@@ -115,3 +115,10 @@ export class ApiQueryRequest implements ApiQueryRequest {
         return this;
     }
 }
+
+/**
+ * Provides a generic interface for an API request to change record data, using PUT, PATCH, DELETE.
+ */
+export interface ApiChangeRequest<T> {
+    records:T[];
+}
