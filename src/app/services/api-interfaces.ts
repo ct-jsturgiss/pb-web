@@ -124,6 +124,26 @@ export type ApiChangeMethod = "PUT"|"PATCH"|"DELETE";
 /**
  * Provides a generic interface for an API request to change record data, using PUT, PATCH, DELETE.
  */
-export interface ApiChangeRequest<T> {
+export interface ApiRecordChangeRequest<T> {
+    uri:string;
     records:T[];
+    toJsonBody: () => string;
+}
+
+export class ApiRecordChangeRequest<T> implements ApiRecordChangeRequest<T> {
+    constructor() {
+
+        this.toJsonBody = function():string {
+            const body:any = {
+                ...this.records
+            };
+            return JSON.stringify(body);
+        }
+    }
+
+    setUri(uri:string) {
+        this.uri = uri;
+
+        return this;
+    }
 }
