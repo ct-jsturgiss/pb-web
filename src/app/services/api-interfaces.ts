@@ -117,6 +117,11 @@ export class ApiQueryRequest implements ApiQueryRequest {
 }
 
 /**
+ * String enum for type of API change request being submitted, corresponding to an HTTP method.
+ */
+export type ApiChangeMethod = "PUT"|"PATCH"|"DELETE";
+
+/**
  * Provides a generic interface for an API request to change record data, using PUT, PATCH, DELETE.
  */
 export interface ApiChangeRequest<T> {
