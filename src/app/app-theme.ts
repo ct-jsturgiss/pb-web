@@ -5,7 +5,9 @@ import { Preset } from '@primeuix/themes/types';
 
 // Caretaker theme
 const colors ={
-    caretakerred: "#ED2426",
+    caretaker_red: "#ED2426",
+    caretaker_red_dark: "#8E1516",// "#BD1C1E",
+    caretaker_red_light: "#F04F51",
     lightgray: "#DDD",
 }
 
@@ -50,7 +52,7 @@ const appPreset:Preset = {
                     row: {
                         hoverBackground: colors.lightgray,
                         selectedColor: "white",
-                        selectedBackground: colors.caretakerred + "CC"
+                        selectedBackground: colors.caretaker_red + "CC"
                     },
                 }
             }
@@ -72,6 +74,18 @@ const appPreset:Preset = {
                     }
                 }
             }
+        },
+        progressspinner: {
+            colorScheme: {
+                light: {
+                    root: {
+                        colorOne: colors.caretaker_red,
+                        colorTwo: colors.caretaker_red,
+                        colorThree: colors.caretaker_red_dark,
+                        colorFour: colors.caretaker_red_dark
+                    }
+                }
+            },
         }
     }
 };
