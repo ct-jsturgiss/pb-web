@@ -132,7 +132,8 @@ export interface ApiRecordChangeRequest<T> {
 
 export class ApiRecordChangeRequest<T> implements ApiRecordChangeRequest<T> {
     constructor() {
-
+        this.uri = "";
+        this.records = [];
         this.toJsonBody = function():string {
             const body:any = {
                 ...this.records
