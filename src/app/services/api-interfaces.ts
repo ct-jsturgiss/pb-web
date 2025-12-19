@@ -32,12 +32,18 @@ export interface ApiQueryRecords {
     records:any[];
 }
 
+export interface ApiResultError {
+    errorCode:number;
+    errorMessage:string;
+    recordKeys:any;
+}
+
 export interface ApiRequestResult {
     isSuccess:boolean;
     isError:boolean;
     isFatal?:boolean;
     message?:string[];
-    errors?:string[]; // TODO: Change to errors object interface.
+    errors?:ApiResultError[]; // TODO: Change to errors object interface.
     data?:ApiQueryRecords;
     stateCode?:ApiRequestError
 }
@@ -53,7 +59,13 @@ export class ApiRequestResult implements ApiRequestResult {
         this.isError = json["is_error"] ?? false;
         this.isFatal = json["is_fatal"] ?? false;
         this.message = json["message"] ?? [];
-        this.errors = json["errors"] ?? [];
+        this.errors = (json["errors"] ?? []).map((e:any) => { 
+            return {
+                errorCode: e["error_code"], 
+                errorMessage: e["error_message"],
+                recordKeys: e["record_keys"] 
+            } as ApiResultError
+        });
         this.data = json["data"] ?? {};
     }
 
@@ -136,7 +148,7 @@ export class ApiRecordChangeRequest<T> implements ApiRecordChangeRequest<T> {
         this.records = [];
         this.toJsonBody = function():string {
             const body:any = {
-                ...this.records
+                "records": this.records // TODO: Add constant?
             };
             return JSON.stringify(body);
         }
