@@ -73,30 +73,29 @@ export class PbApi implements IPbApi {
         }
     }
 
-    pushRecordChanges<T>(method:ApiChangeMethod, request:ApiRecordChangeRequest<T>) {
+    pushRecordChanges<T>(method:ApiChangeMethod, pushRequest:ApiRecordChangeRequest<T>):Observable<ApiRequestResult> {
         try {
-            const fullUri:string = environment.apiEndpoint + request.uri;
-
-            const headers = {
+            const fullUri:string = environment.apiEndpoint + pushRequest.uri;
+            const httpOptions = {
                 headers: {
                     "Content-Type": "application/json"
                 },
                 timeout: ApiConst.defaults.requestTimeout
             };
-            let httpfunc;
+            const body = pushRequest.toJsonBody();
+            let observable:Observable<ApiRequestResult>;
             switch(method) {
                 case "PUT":
-                    httpfunc = this.m_http.put;
+                    observable = this.m_http.put<ApiRequestResult>(fullUri, body, httpOptions);
                     break;
                 case "PATCH":
-                    httpfunc = this.m_http.patch;
+                    observable = this.m_http.patch<ApiRequestResult>(fullUri, body, httpOptions);
                     break;
                 case "DELETE":
-                    httpfunc = this.m_http.delete;
+                    observable = this.m_http.post<ApiRequestResult>(fullUri, body, httpOptions);
                     break;
             }
-
-            return httpfunc<ApiRequestResult>(fullUri, request.toJsonBody(), headers).pipe(
+            return observable.pipe(
                 retry(1),
                 // Try to capture network failures, otherwise pass on.
                 catchError((errorResponse:HttpErrorResponse, obs) => {
