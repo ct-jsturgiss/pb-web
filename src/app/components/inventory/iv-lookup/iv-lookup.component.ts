@@ -19,7 +19,7 @@ import { SearchBarStateStore } from '../../core/controls/search-bar/services/sea
 import { LookupMode } from '../../../models/core/lookup-mode';
 import { AppConst } from '../../../../constants/ui-constants';
 import { Subscription } from 'rxjs';
-import { ApiQueryResult, QueryData } from '../../../services/api-interfaces';
+import { ApiRequestResult, QueryData } from '../../../services/api-interfaces';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ApiConst } from '../../../../constants/api-constants';
 import { DialogModule } from 'primeng/dialog';
@@ -96,7 +96,7 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 		this.store().filterItems();
 	}
 
-	onLookupsRefreshError(error:ApiQueryResult) {
+	onLookupsRefreshError(error:ApiRequestResult) {
 		this.selectedLookup.set(null);
 		if(error.stateCode?.code === ApiConst.errorCodes.serverUnreachable.code) {
 			this.m_appDialogRef = this.dialogService.showApiUnavailable();
