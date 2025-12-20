@@ -1,3 +1,4 @@
-export interface ModelAdapter<T> {
-    adapt(item:any):T;
+export interface ModelAdapter<TRecord,TChangeRecord> {
+    adaptFromApi(item:any):TRecord;
+    adaptToApi(item:TRecord):TChangeRecord;
 }
