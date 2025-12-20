@@ -75,13 +75,15 @@ export class IvLookupPath {
     }
 }
 
-export const IvLookupPathAdapter:ModelAdapter<IvLookupPath> = {
+export const IvLookupPathAdapter:ModelAdapter<IvLookupPath,any> = {
 
-    adapt(item:any) {
+    adaptFromApi(item:any) {
         return new IvLookupPath(
             item["path_id"], 
             item["path_name"]
         );
     },
-
+    adaptToApi(item) {
+        throw new Error("Not implemented.");
+    },
 }

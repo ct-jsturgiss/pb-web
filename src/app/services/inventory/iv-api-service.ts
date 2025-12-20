@@ -28,7 +28,7 @@ export class InventoryApiService extends PbApi {
                     } else {
                         return {
                             response: result,
-                            records: (result.data?.records.map(r => InventoryUnitAdapter.adapt(r)) ?? [])
+                            records: (result.data?.records.map(r => InventoryUnitAdapter.adaptFromApi(r)) ?? [])
                         }
                     }
                 })
@@ -47,7 +47,7 @@ export class InventoryApiService extends PbApi {
                     } else {
                         return {
                             response: result,
-                            records: (result.data?.records.map(r => InventoryLookupAdapter.adapt(r)) ?? [])
+                            records: (result.data?.records.map(r => InventoryLookupAdapter.adaptFromApi(r)) ?? [])
                         };
                     }
                 })
@@ -66,7 +66,7 @@ export class InventoryApiService extends PbApi {
                     } else {
                         return {
                             response: result,
-                            records: (result.data?.records.map(r => IvLookupPathAdapter.adapt(r)) ?? []) as IvLookupPath[]
+                            records: (result.data?.records.map(r => IvLookupPathAdapter.adaptFromApi(r)) ?? []) as IvLookupPath[]
                         };
                     }
                 })

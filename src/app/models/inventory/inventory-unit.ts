@@ -36,13 +36,21 @@ export class InventoryUnit extends RecordWithId implements InventoryUnit {
     }
 }
 
-export const InventoryUnitAdapter:ModelAdapter<InventoryUnit> = {
+export const InventoryUnitAdapter:ModelAdapter<InventoryUnit,InventoryUnitChange> = {
 
-    adapt(item:any): InventoryUnit {
+    adaptFromApi(item:any): InventoryUnit {
         const unit = new InventoryUnit(item["id"], item["unit"], item["name"]);
         unit.pluralName = item["plural_name"] ?? null;
 
         return unit;
+    },
+    adaptToApi(item:InventoryUnit):InventoryUnitChange {
+        return {
+            "id": item.id,
+            "unit": item.unit,
+            "name": item.unitName,
+            "plural_name": item.pluralName
+        };
     }
 
 }

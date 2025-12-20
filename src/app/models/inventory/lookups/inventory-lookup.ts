@@ -30,9 +30,9 @@ export class InventoryLookup implements InventoryLookup {
 
 }
 
-export const InventoryLookupAdapter:ModelAdapter<InventoryLookup> = {
+export const InventoryLookupAdapter:ModelAdapter<InventoryLookup,any> = {
 
-    adapt(item: any): InventoryLookup {
+    adaptFromApi(item: any): InventoryLookup {
         let ivl = new InventoryLookup(
             item["id"],
             item["item_code"],
@@ -46,6 +46,9 @@ export const InventoryLookupAdapter:ModelAdapter<InventoryLookup> = {
         ivl.listName = (item["list_name"] as string)?.trim() === "" ? null : item["list_name"];
 
         return ivl;
+    },
+    adaptToApi(item:InventoryLookup) {
+        throw new Error("Not implemented.");
     }
 
 }
