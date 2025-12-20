@@ -11,8 +11,10 @@ export interface InventoryUnit extends RecordWithId {
 }
 
 export interface InventoryUnitChange {
-    record:InventoryUnit;
-    changeKind:RecordChangeKind;
+    "id":number|null;
+    "unit":string;
+    "name":string;
+    "plural_name":string|null;
 }
 
 export class InventoryUnit extends RecordWithId implements InventoryUnit {
