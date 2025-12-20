@@ -1,4 +1,5 @@
 import { ApiRequestError } from "../../constants/api-constants";
+import { RecordChangeKind } from "../models/core/common-types";
 
 export type ApiResultHandler = (response:ApiRequestResult) => void;
 
@@ -138,6 +139,7 @@ export type ApiChangeMethod = "PUT"|"PATCH"|"DELETE";
  */
 export interface ApiRecordChangeRequest<T> {
     uri:string;
+    changeKind:RecordChangeKind;
     records:T[];
     toJsonBody: () => string;
 }
@@ -145,6 +147,7 @@ export interface ApiRecordChangeRequest<T> {
 export class ApiRecordChangeRequest<T> implements ApiRecordChangeRequest<T> {
     constructor() {
         this.uri = "";
+        this.changeKind = RecordChangeKind.None;
         this.records = [];
         this.toJsonBody = function():string {
             const body:any = {
