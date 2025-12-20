@@ -6,19 +6,22 @@ import { Button } from "primeng/button";
 import { TableModule } from "primeng/table"
 import { IvUnitsService } from '../../../services/inventory/iv-units-service';
 import { AsyncPipe } from '@angular/common';
-import { ApiQueryResult, QueryData } from '../../../services/api-interfaces';
+import { ApiRequestResult, QueryData } from '../../../services/api-interfaces';
 import { InventoryUnit } from '../../../models/inventory/inventory-unit';
 import { ProgressSpinner } from "primeng/progressspinner";
 import { ApiConst } from '../../../../constants/api-constants';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppDialogService } from '../../../services/core/dialog-service';
+import { ManageIvUnitDialogComponent } from '../../dialogs/inventory/manage-iv-unit-dialog/manage-iv-unit-dialog.component';
+import { ManageIvUnitService } from '../../dialogs/inventory/manage-iv-unit-dialog/services/manage-iv-unit-service';
+import { ManageMode } from '../../core/models/manage-mode.enum';
 
 @Component({
   selector: 'pb-iv-units-view',
-  imports: [ToolbarModule, Button, TableModule, AsyncPipe, ProgressSpinner],
+  imports: [ToolbarModule, Button, TableModule, AsyncPipe, ProgressSpinner, ManageIvUnitDialogComponent],
   templateUrl: './iv-units-view.component.html',
   styleUrl: './iv-units-view.component.scss',
-  providers: [AppDialogService]
+  providers: [AppDialogService, ManageIvUnitService]
 })
 export class IvUnitsViewComponent implements OnInit {
 
@@ -26,13 +29,16 @@ export class IvUnitsViewComponent implements OnInit {
 
   // Signals
   public isLoading = signal<boolean>(false);
+  public isManageDialogVisible = signal<boolean>(false);
 
-  // Store
+  // Services
   public service = input.required<IvUnitsService>();
   public dialogService:AppDialogService;
+  public manageService:ManageIvUnitService;
 
-  constructor(dialogService:AppDialogService) {
+  constructor(dialogService:AppDialogService, manageService:ManageIvUnitService) {
     this.dialogService = dialogService;
+    this.manageService = manageService;
   }
 
   ngOnInit(): void {
@@ -49,7 +55,7 @@ export class IvUnitsViewComponent implements OnInit {
     this.service().setUnitStore(data.records);
   }
 
-  onUnitsRefreshError(error:ApiQueryResult) {
+  onUnitsRefreshError(error:ApiRequestResult) {
     if(error.stateCode?.code === ApiConst.errorCodes.serverUnreachable.code) {
       this.m_appDialogRef = this.dialogService.showApiUnavailable();
     } else {
@@ -60,6 +66,12 @@ export class IvUnitsViewComponent implements OnInit {
 
   onUnitsRefreshComplete() {
     this.isLoading.set(false);
+  }
+
+  // Handlers
+  onButtonNewClicked() {
+    this.manageService.setMode(ManageMode.Add);
+    this.isManageDialogVisible.set(true);
   }
 
 }

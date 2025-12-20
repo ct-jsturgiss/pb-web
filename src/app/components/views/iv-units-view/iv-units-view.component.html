@@ -5,7 +5,7 @@
     <div class="row me-2">
         <p-toolbar>
             <ng-template #start>
-                <p-button class="me-2" icon="pi pi-plus" size="small" severity="primary" label="New"/>
+                <p-button class="me-2" icon="pi pi-plus" size="small" severity="primary" label="New" (onClick)="onButtonNewClicked()"/>
                 <p-button class="mx-2" icon="pi pi-trash" size="small" severity="secondary" label="Delete"/>
                 <p-button class="mx-2" icon="pi pi-save" size="small" severity="secondary" label="Save"/>
             </ng-template>
@@ -44,3 +44,4 @@
         </div>
     </div>
 </div>
+<pb-manage-iv-unit-dialog [service]="manageService" [(isVisible)]="isManageDialogVisible"/>

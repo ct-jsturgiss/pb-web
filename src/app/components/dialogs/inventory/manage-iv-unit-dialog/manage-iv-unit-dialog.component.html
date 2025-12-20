@@ -1,3 +1,46 @@
-<p-dialog>
-    
+<p-dialog 
+    [header]="getDialogName()" 
+    [modal]="true" 
+    [(visible)]="isVisible" 
+    (onHide)="onDialogClose()" 
+    [style]="{ width: '25vw', height: '40vh'}"
+    contentStyleClass="h-100">
+    <div class="d-flex flex-column h-100">
+        <div class="row mb-2">
+            <div class="col">
+                <p-iftalabel>
+                    <input pInputText name="unit" fluid [invalid]="!service().getUnit()" [value]="service().unit$ | async" (change)="onUnitChanged($event)"/>
+                    <label for="unit" class="ps-2">Unit *</label>
+                    @if (!service().getUnit()) {
+                        <p-message severity="error" variant="simple" size="small">Unit is required</p-message>
+                    }
+                </p-iftalabel>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <p-iftalabel>
+                    <input pInputText name="unitName" fluid [invalid]="!service().getUnitName()" [value]="service().unitName$ | async" (change)="onUnitNameChanged($event)"/>
+                    <label for="unitName" class="ps-2">Name *</label>
+                    @if (!service().getUnitName()) {
+                        <p-message severity="error" variant="simple" size="small">Unit Name is required</p-message>
+                    }
+                </p-iftalabel>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <p-iftalabel>
+                    <input pInputText name="pluralName" fluid [invalid]="!service().getPluralName()" [value]="service().pluralName$ | async" (change)="onPluralNameChanged($event)"/>
+                    <label for="pluralName" class="ps-2">Plural Name</label>
+                </p-iftalabel>
+            </div>
+        </div>
+        <div class="row flex-fill">
+            <span class="align-content-end text-end">
+                <p-button class="px-2" label="Save" (onClick)="onButtonSaveClicked()"/>
+                <p-button class="px-2" label="Cancel" severity="secondary" (onClick)="onButtonCancelClicked()"/>
+            </span>
+        </div>
+    </div>
 </p-dialog>
