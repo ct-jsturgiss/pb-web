@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { ManageIvUnitService } from './services/manage-iv-unit-service';
 import { ManageMode } from '../../../core/models/manage-mode.enum';
 
@@ -11,6 +11,8 @@ import { MessageModule } from "primeng/message"
 import { AsyncPipe } from '@angular/common';
 import { AppSpinnerService } from '../../../core/controls/app-spinner/services/app-spinner.service';
 import { ApiRequestResult } from '../../../../services/api-interfaces';
+import { InventoryUnit } from '../../../../models/inventory/inventory-unit';
+import { ApiConst } from '../../../../../constants/api-constants';
 
 @Component({
   selector: 'pb-manage-iv-unit-dialog',
@@ -22,12 +24,18 @@ import { ApiRequestResult } from '../../../../services/api-interfaces';
 })
 export class ManageIvUnitDialogComponent {
 
+  // State
+  private m_record:InventoryUnit|null = null;
+
   // Service
   public service = input.required<ManageIvUnitService>();
   public appSpinner:AppSpinnerService;
 
   // Inputs
   public isVisible = model<boolean>(false);
+
+  // Outputs
+  public dialogClosed = output<void>();
 
   constructor(appSpinnerService:AppSpinnerService) {
     this.appSpinner = appSpinnerService;
@@ -73,6 +81,7 @@ export class ManageIvUnitDialogComponent {
         life: 5000
       });
     } else {
+      this.m_record = this.service().getAsRecord();
       this.appSpinner.setIsVisible(true);
       this.service().commitRecord({
         next: v => this.onCommitFinished(v),
@@ -100,12 +109,13 @@ export class ManageIvUnitDialogComponent {
   onCommitError(result:ApiRequestResult) {
     console.error(`Commit errors: `, result.errors);
     this.appSpinner.setIsVisible(false);
-    const firstError = result.errors?.at(0);
-    this.toastCommitFailed(firstError?.errorMessage || "Unknown error");
+    this.toastCommitFailed(ApiConst.helpers.getToastMessage(result));
   }
 
   onCommitCompleted() { 
     this.toastCommitSuccess();
+    this.isVisible.set(false);
+    this.dialogClosed.emit();
   }
 
 
@@ -113,7 +123,8 @@ export class ManageIvUnitDialogComponent {
     this.service().toast.add({
       severity: "success",
       summary: "Unit Of Measure",
-      detail: `Successfully added '${this.service().getUnitName()}'`
+      detail: `Successfully added '${this.m_record?.unitName}'`,
+      life: 5000
     });
   }
 
@@ -121,7 +132,8 @@ export class ManageIvUnitDialogComponent {
     this.service().toast.add({
       severity: "error",
       summary: "Unit Of Measure",
-      detail: `Failed to add '${this.service().getUnitName()}': ${reason}`
+      detail: `Failed to add '${this.m_record?.unitName}': ${reason}`,
+      life: 5000
     });
   }
 

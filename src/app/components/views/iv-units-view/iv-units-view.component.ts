@@ -43,6 +43,11 @@ export class IvUnitsViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading.set(true);
+    this.refreshUnits();
+  }
+
+  // Functions
+  refreshUnits() {
     this.service().refreshUnits({
       next: (v) => this.onUnitsRefresh(v),
       error: (v) => this.onUnitsRefreshError(v),
@@ -69,9 +74,14 @@ export class IvUnitsViewComponent implements OnInit {
   }
 
   // Handlers
+
   onButtonNewClicked() {
     this.manageService.setMode(ManageMode.Add);
     this.isManageDialogVisible.set(true);
+  }
+
+  onManageDialogClosed() {
+    this.refreshUnits();
   }
 
 }

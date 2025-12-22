@@ -44,4 +44,4 @@
         </div>
     </div>
 </div>
-<pb-manage-iv-unit-dialog [service]="manageService" [(isVisible)]="isManageDialogVisible"/>
+<pb-manage-iv-unit-dialog [service]="manageService" [(isVisible)]="isManageDialogVisible" (dialogClosed)="onManageDialogClosed()"/>
