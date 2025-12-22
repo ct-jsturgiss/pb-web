@@ -56,7 +56,7 @@ export class IvUnitsViewComponent implements OnInit {
   }
 
   onUnitsRefreshError(error:ApiRequestResult) {
-    if(error.stateCode?.code === ApiConst.errorCodes.serverUnreachable.code) {
+    if(error.stateCode?.code === ApiConst.localErrorCodes.serverUnreachable.code) {
       this.m_appDialogRef = this.dialogService.showApiUnavailable();
     } else {
       console.error(error); // TODO: Other errors?

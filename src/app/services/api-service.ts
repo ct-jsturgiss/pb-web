@@ -32,7 +32,7 @@ export class PbApi implements IPbApi {
             isError: true,
             isSuccess: false,
             isFatal: true,
-            stateCode: ApiConst.errorCodes.unknownError,
+            stateCode: ApiConst.localErrorCodes.unknownError,
         } as ApiRequestResult;
     }
 
@@ -41,7 +41,7 @@ export class PbApi implements IPbApi {
             isError: true,
             isSuccess: false,
             isFatal: true,
-            stateCode: ApiConst.errorCodes.serverUnreachable,
+            stateCode: ApiConst.localErrorCodes.serverUnreachable,
         } as ApiRequestResult;
     }
 

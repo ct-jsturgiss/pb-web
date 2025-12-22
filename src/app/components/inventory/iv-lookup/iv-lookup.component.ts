@@ -98,7 +98,7 @@ export class IvLookupComponent implements OnInit, OnDestroy, AfterContentInit {
 
 	onLookupsRefreshError(error:ApiRequestResult) {
 		this.selectedLookup.set(null);
-		if(error.stateCode?.code === ApiConst.errorCodes.serverUnreachable.code) {
+		if(error.stateCode?.code === ApiConst.localErrorCodes.serverUnreachable.code) {
 			this.m_appDialogRef = this.dialogService.showApiUnavailable();
 		} else {
 			console.error(error); // TODO: Other errors?
