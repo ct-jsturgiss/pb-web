@@ -15,10 +15,11 @@ import { AppDialogService } from '../../../services/core/dialog-service';
 import { ManageIvUnitDialogComponent } from '../../dialogs/inventory/manage-iv-unit-dialog/manage-iv-unit-dialog.component';
 import { ManageIvUnitService } from '../../dialogs/inventory/manage-iv-unit-dialog/services/manage-iv-unit-service';
 import { ManageMode } from '../../core/models/manage-mode.enum';
+import { BlockUI } from "primeng/blockui";
 
 @Component({
   selector: 'pb-iv-units-view',
-  imports: [ToolbarModule, Button, TableModule, AsyncPipe, ProgressSpinner, ManageIvUnitDialogComponent],
+  imports: [ToolbarModule, Button, TableModule, AsyncPipe, ProgressSpinner, ManageIvUnitDialogComponent, BlockUI],
   templateUrl: './iv-units-view.component.html',
   styleUrl: './iv-units-view.component.scss',
   providers: [AppDialogService, ManageIvUnitService]
@@ -74,10 +75,18 @@ export class IvUnitsViewComponent implements OnInit {
     this.isLoading.set(false);
   }
 
+  onUnitDeleted(result:ApiRequestResult) {
+
+  }
+
+  onUnitDeleteError(result:ApiRequestResult) {
+
+  }
+
   // Handlers
 
   onDeleteClicked() {
-    
+    this.isLoading.set(true);
   }
 
   onEditClicked() {
