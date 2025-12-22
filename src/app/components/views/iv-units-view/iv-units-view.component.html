@@ -6,8 +6,8 @@
         <p-toolbar>
             <ng-template #start>
                 <p-button class="me-2" icon="pi pi-plus" size="small" severity="primary" label="New" (onClick)="onButtonNewClicked()"/>
-                <p-button class="mx-2" icon="pi pi-trash" size="small" severity="secondary" label="Delete"/>
-                <p-button class="mx-2" icon="pi pi-save" size="small" severity="secondary" label="Save"/>
+                <p-button class="mx-2" icon="pi pi-pencil" size="small" severity="secondary" label="Edit" [disabled]="selectedUnit() === null"/>
+                <p-button class="mx-2" icon="pi pi-trash" size="small" severity="secondary" label="Delete" [disabled]="selectedUnit() === null"/>
             </ng-template>
         </p-toolbar>
     </div>
@@ -24,7 +24,8 @@
                     scrollHeight="flex"
                     [value]="(service().unitStore$ | async) ?? []"
                     dataKey="id"
-                    selectionMode="single">
+                    selectionMode="single"
+                    [(selection)]="selectedUnit">
                     <ng-template #header>
                         <tr>
                             <th>Unit</th>
@@ -33,7 +34,7 @@
                         </tr>
                     </ng-template>
                     <ng-template #body let-item>
-                        <tr>
+                        <tr [pSelectableRow]="item">
                             <td>{{item.unit}}</td>
                             <td>{{item.unitName}}</td>
                             <td>{{item.pluralName}}</td>

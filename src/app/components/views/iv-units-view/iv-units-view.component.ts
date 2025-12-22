@@ -30,6 +30,7 @@ export class IvUnitsViewComponent implements OnInit {
   // Signals
   public isLoading = signal<boolean>(false);
   public isManageDialogVisible = signal<boolean>(false);
+  public selectedUnit = signal<InventoryUnit|null>(null);
 
   // Services
   public service = input.required<IvUnitsService>();
@@ -74,6 +75,14 @@ export class IvUnitsViewComponent implements OnInit {
   }
 
   // Handlers
+
+  onDeleteClicked() {
+    
+  }
+
+  onEditClicked() {
+
+  }
 
   onButtonNewClicked() {
     this.manageService.setMode(ManageMode.Add);
