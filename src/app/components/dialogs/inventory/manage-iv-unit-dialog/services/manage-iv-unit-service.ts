@@ -134,6 +134,13 @@ export class ManageIvUnitService implements OnDestroy {
         }
     }
 
+    deleteRecord(observer:Observer<ApiRequestResult>) {
+        const request = new ApiRecordChangeRequest<number>();
+        request.setUri(`inventory/units/delete`);
+        request.records.push(this.getAsRecord().id);
+        this.api.pushRecordChanges("DELETE", request);
+    }
+
     //<===
 
 }
